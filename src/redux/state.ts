@@ -1,3 +1,5 @@
+import { renderTree } from "../render";
+
 export type HeaderInfoType = {
   title: string
   logoUrl: string
@@ -19,21 +21,26 @@ type profileInfaType = {
   img: string
   likes: number | null
 };
-export type PostsType = {
+
+export type PostPropsType = {
   id: number | null
   message: string
   likesCount: number | null
 };
+
 export type ProfilePageType = {
   profileInfa: profileInfaType
-  posts: Array<PostsType>
+  messageForNewPost: string
+  posts: Array<PostPropsType>
+  chengeNewText: (newText: string) => void
+  addPost: ( post: string ) => void
 };
 
-type DialogsType = {
+export type DialogsType = {
   id: number
   name: string
 };
-type MessagesType = {
+export type MessagesType = {
   id: number
   message: string
 };
@@ -43,17 +50,35 @@ export type DialogPageType = {
 };
 
 type SideBarPageType = {
-
 }
 
-type RootStateType = {
+export type RootStateType = {
   HeaderPage: HeaderPageType
   NavbarPage: NavbarPageType
   ProfilePage: ProfilePageType
   DialogsPage: DialogPageType
   SideBarPage: SideBarPageType
-}
+};
 
+//function state
+
+export const addPost = (postText: string) => {
+  const newPost: PostPropsType = {
+    id: new Date().getTime(),
+    message: postText,
+    likesCount: 0
+  }
+  state.ProfilePage.posts.push( newPost )
+  renderTree( state );
+};
+
+export const chengeNewText= (newText: string) => {
+  state.ProfilePage.messageForNewPost = newText;
+  renderTree(state);
+};
+
+
+//my state
 let state: RootStateType = {
   HeaderPage: {
     HeaderInfo: {
@@ -68,22 +93,25 @@ let state: RootStateType = {
     {id: 3, menuItem: 'News'},
     {id: 4, menuItem: 'Music'},
     {id: 5, menuItem: 'Setting'}
-  ]
+    ]
   },
-
   ProfilePage: {
     profileInfa: {
       text: 'BLA-bla-bol',
       img: 'https://avatarko.ru/img/kartinka/2/Gubka_Bob.jpg',
       likes: 50
     },
+    messageForNewPost: '',
     posts: [
       {id: 1, message: 'hi world!!!', likesCount: 14},
       {id: 2, message: 'It\'s my first post', likesCount: 13},
       {id: 3, message: 'It\'s my secondary post', likesCount: 124},
-      {id: 4, message: 'It\'s my third post', likesCount: 1243}
-    ]
+      {id: 4, message: 'It\'s my third post', likesCount: 18}
+    ],
+    addPost,
+    chengeNewText
   },
+
   DialogsPage: {
     dialogs: [
       {id: 1, name: 'Dimon'},
@@ -101,7 +129,7 @@ let state: RootStateType = {
       {id: 1, message: 'Ho?'}
       ]
   },
-  SideBarPage: {}
+  SideBarPage: { }
 };
 
 export default state;

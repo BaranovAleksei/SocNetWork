@@ -1,4 +1,5 @@
 import React from 'react';
+import s from './../Dialogs.module.sass';
 
 type DialogItemType = {
   name: string
@@ -7,7 +8,7 @@ type DialogItemType = {
 
 export function DialogItem (props: DialogItemType) {
   return (
-    <div>
+    <div className={s.nameDialog}>
       <span> {props.name} </span>
     </div>
   )

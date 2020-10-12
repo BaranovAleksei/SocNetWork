@@ -1,28 +1,26 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, { ChangeEvent } from 'react';
 import s from './Profile.module.sass';
-import { v1 } from "uuid";
 
 import { Post } from './Post';
-import {ProfilePageType, PostsType} from "../../redux/state";
+import { ProfilePageType, PostPropsType } from "../../redux/state";
 
 export const Profile: React.FC<ProfilePageType> = (props) => {
 
-  const [ post , setPost] = useState<string>('')
-
-  const onChangePost = (e: ChangeEvent<HTMLInputElement>) => {
-    setPost(e.currentTarget.value);
-  };
-
-  const addPost = ( ) => {
-    console.log(' addPost');
-  }
-
-  const mappedPosts = props.posts.map((el: PostsType) => (
+  const mappedPosts = props.posts.map((el: PostPropsType) => (
     <Post
-      message={el.message}
-      likesCount={el.likesCount}
+      id = { el.id }
+      message= { el.message}
+      likesCount={ el.likesCount }
     />
   ));
+
+  const addPost  = () => {
+    props.addPost( props.messageForNewPost);
+  }
+
+  const postOnChange = ( e: ChangeEvent<HTMLTextAreaElement>) => {
+    props.chengeNewText(e.currentTarget.value);
+  }
 
   return (
     <div className={s.profile}>
@@ -31,10 +29,9 @@ export const Profile: React.FC<ProfilePageType> = (props) => {
         <span>{ props.profileInfa.text }</span>
       </div>
       <div className={s.newPost}>
-        <input
-          value = { post }
-          onChange= { onChangePost }
-        />
+        <textarea value={ props.messageForNewPost}
+                  onChange = { postOnChange }>
+        </textarea>
         <button onClick = { addPost } > add post </button>
       </div>
       <div className={s.OverlayPosts}>

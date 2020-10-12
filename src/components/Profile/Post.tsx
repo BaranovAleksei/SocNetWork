@@ -1,16 +1,13 @@
 import React from 'react';
 import s from './Profile.module.sass'
 
-type PropsType = {
-  message: string
-  likesCount: number | null
-}
+import { PostPropsType } from "../../redux/state";
 
-export function Post (props: PropsType) {
+export function Post ( props: PostPropsType ) {
   return (
-    <div className={s.PostOverlay}>
-      <p>{props.message}</p>
-      <span>{props.likesCount}</span>
+    <div className={ s.PostOverlay }>
+      <p>{ props.message }</p>
+      <p>{ props.likesCount }</p>
     </div>
   )
 }

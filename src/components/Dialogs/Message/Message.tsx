@@ -1,12 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { MessagesType } from './../../../redux/state';
+import s from './../Dialogs.module.sass';
 
-type MessageType = {
-  message: string
-}
-
-export function Message (props: MessageType) {
+export function Message (props: MessagesType) {
   return (
-    <div>
+    <div className={ s.messageOver }>
       <span>{props.message}</span>
     </div>
   )
