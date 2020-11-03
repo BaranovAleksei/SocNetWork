@@ -1,5 +1,3 @@
-import { renderTree } from "../render";
-
 export type HeaderInfoType = {
   title: string
   logoUrl: string
@@ -7,21 +5,20 @@ export type HeaderInfoType = {
 type HeaderPageType = {
   HeaderInfo: HeaderInfoType
 };
-
 type NavbarType = {
   id: number
   menuItem: string
 };
+
 export type NavbarPageType = {
   navbar: Array<NavbarType>
 };
 
-type profileInfaType = {
+export type profileInfoType = {
   text: string
   img: string
   likes: number | null
 };
-
 export type PostPropsType = {
   id: number | null
   message: string
@@ -29,13 +26,10 @@ export type PostPropsType = {
 };
 
 export type ProfilePageType = {
-  profileInfa: profileInfaType
+  profileInfo: profileInfoType
   messageForNewPost: string
   posts: Array<PostPropsType>
-  chengeNewText: (newText: string) => void
-  addPost: ( post: string ) => void
 };
-
 export type DialogsType = {
   id: number
   name: string
@@ -60,76 +54,121 @@ export type RootStateType = {
   SideBarPage: SideBarPageType
 };
 
-//function state
-
-export const addPost = (postText: string) => {
-  const newPost: PostPropsType = {
-    id: new Date().getTime(),
-    message: postText,
-    likesCount: 0
-  }
-  state.ProfilePage.posts.push( newPost )
-  renderTree( state );
+export type StoreType = {
+  _state: RootStateType
+  _onChange: () => void
+  subscribe: (callback: () => void) => void
+  getState: () => RootStateType
+  // changeNewText: (newText: string) => void
+  // addPost: ( ) => void
+  dispatch: (action:  ActionType) => void
 };
 
-export const chengeNewText= (newText: string) => {
-  state.ProfilePage.messageForNewPost = newText;
-  renderTree(state);
+export type ActionType = ReturnType<typeof addPostAC> | ReturnType<typeof changeNewTextAC>
+
+export const addPostAC = (postText: string) => {
+  return{
+    type: 'ADD-POST',
+    postText: postText
+  } as const
+};
+export const changeNewTextAC = (newText: string) => {
+  return{
+    type: 'CHANGE-NEW-TEXT',
+    newText: newText
+  } as const
 };
 
-
-//my state
-let state: RootStateType = {
-  HeaderPage: {
-    HeaderInfo: {
-      title: 'Social Network',
-      logoUrl: 'https://regnum.ru/uploads/pictures/news/2020/02/08/regnum_picture_1581171734102077_normal.png'
-    }
-  },
-  NavbarPage: {
-    navbar: [
-    {id: 1, menuItem: 'Profile'},
-    {id: 2, menuItem: 'Dialogs'},
-    {id: 3, menuItem: 'News'},
-    {id: 4, menuItem: 'Music'},
-    {id: 5, menuItem: 'Setting'}
-    ]
-  },
-  ProfilePage: {
-    profileInfa: {
-      text: 'BLA-bla-bol',
-      img: 'https://avatarko.ru/img/kartinka/2/Gubka_Bob.jpg',
-      likes: 50
+const store: StoreType = {
+  _state: {
+    // HEADER
+    HeaderPage: {
+      HeaderInfo: {
+        title: 'Social Network',
+        logoUrl: 'https://regnum.ru/uploads/pictures/news/2020/02/08/regnum_picture_1581171734102077_normal.png'
+      }
     },
-    messageForNewPost: '',
-    posts: [
-      {id: 1, message: 'hi world!!!', likesCount: 14},
-      {id: 2, message: 'It\'s my first post', likesCount: 13},
-      {id: 3, message: 'It\'s my secondary post', likesCount: 124},
-      {id: 4, message: 'It\'s my third post', likesCount: 18}
-    ],
-    addPost,
-    chengeNewText
-  },
-
-  DialogsPage: {
-    dialogs: [
-      {id: 1, name: 'Dimon'},
-      {id: 1, name: 'Andrew'},
-      {id: 1, name: 'Sveta'},
-      {id: 1, name: 'Sasha'},
-      {id: 1, name: 'Viktor'},
-      {id: 1, name: 'Valera'}
-    ],
-    messages: [
-      {id: 1, message: 'Nihay'},
-      {id: 1, message: 'What is you name?'},
-      {id: 1, message: 'when?'},
-      {id: 1, message: 'Whot?'},
-      {id: 1, message: 'Ho?'}
+    // Left menu
+    NavbarPage: {
+      navbar: [
+        {id: 1, menuItem: 'Profile'},
+        {id: 2, menuItem: 'Dialogs'},
+        {id: 3, menuItem: 'News'},
+        {id: 4, menuItem: 'Music'},
+        {id: 5, menuItem: 'Setting'}
       ]
+    },
+    // page profile
+    ProfilePage: {
+      profileInfo: {
+        text: 'BLA-bla-bol',
+        img: 'https://avatarko.ru/img/kartinka/2/Gubka_Bob.jpg',
+        likes: 50
+      },
+      messageForNewPost: '',
+      posts: [
+        {id: 1, message: 'hi world!!!', likesCount: 14},
+        {id: 2, message: 'It\'s my first post', likesCount: 13},
+        {id: 3, message: 'It\'s my secondary post', likesCount: 124},
+        {id: 4, message: 'It\'s my third post', likesCount: 18}
+      ],
+    },
+    // page dialogs
+    DialogsPage: {
+      dialogs: [
+        {id: 1, name: 'Dimon'},
+        {id: 1, name: 'Andrew'},
+        {id: 1, name: 'Sveta'},
+        {id: 1, name: 'Sasha'},
+        {id: 1, name: 'Viktor'},
+        {id: 1, name: 'Valera'}
+      ],
+      messages: [
+        {id: 1, message: 'Nihay'},
+        {id: 1, message: 'What is you name?'},
+        {id: 1, message: 'when?'},
+        {id: 1, message: 'Whot?'},
+        {id: 1, message: 'Ho?'}
+      ]
+    },
+    SideBarPage: { }
   },
-  SideBarPage: { }
-};
+  // changeNewText ( newText: string ) {
+  //   this._state.ProfilePage.messageForNewPost = newText;
+  //   store._onChange();
+  // },
+  // addPost () {
+  //   const newPost: PostPropsType = {
+  //     id: new Date().getTime(),
+  //     message: postText,
+  //     likesCount: 0
+  //   }
+  //   this._state.ProfilePage.posts.push( newPost )
+  //   store._onChange();
+  // },
+  _onChange() {
+    console.log('function onChange');
+  },
+  subscribe ( callback ) {
+    this._onChange = callback;
+  },
+  getState() {
+    return this._state;
+  },
+  dispatch(action) {
+    if (action.type === 'ADD-POST') {
+      const newPost: PostPropsType = {
+        id: new Date().getTime(),
+        message: action.postText,
+        likesCount: 0
+      }
+      this._state.ProfilePage.posts.unshift(newPost)
+      store._onChange();
+    } else if (action.type === 'CHANGE-NEW-TEXT') {
+      this._state.ProfilePage.messageForNewPost = action.newText;
+      store._onChange();
+    }
+  }
+}
 
-export default state;
+export default store;

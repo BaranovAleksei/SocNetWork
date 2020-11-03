@@ -7,21 +7,30 @@ import {Navbar} from './components/Navbar/Navbar';
 import {Profile} from './components/Profile/Profile';
 import {Dialogs} from './components/Dialogs/Dialogs';
 
-import state, { chengeNewText } from './redux/state';
-import { addPost } from "./redux/state";
+import store, {ActionType, StoreType} from "./redux/state";
 
-function App() {
+type PropsType = {
+  store: StoreType
+  // addPost:()=>void
+  // changeNewText: (text:string)=> void
+  dispatch: (action: ActionType) => void
+}
+
+const App: React.FC<PropsType> = ( props ) => {
+
+  const state = props.store.getState();
 
   return (
     <BrowserRouter>
       <div className="App">
         <Header title = { state.HeaderPage.HeaderInfo.title} logoUrl={ state.HeaderPage.HeaderInfo.logoUrl } />
-        <Navbar navbar={ state.NavbarPage.navbar}/>
-        <Route path='/profile' render = { () => <Profile profileInfa = { state.ProfilePage.profileInfa }
+        <Navbar navbar = { state.NavbarPage.navbar}/>
+        <Route path='/profile' render = { () => <Profile profileInfo = { state.ProfilePage.profileInfo }
                                                          posts = {state.ProfilePage.posts}
-                                                         messageForNewPost={ state.ProfilePage.messageForNewPost }
-                                                         addPost = { addPost }
-                                                         chengeNewText = { chengeNewText }
+                                                         messageForNewPost = { state.ProfilePage.messageForNewPost }
+                                                         // addPost = { props.addPost }
+                                                         // changeNewText = { props.changeNewText }
+                                                         dispatch={props.dispatch.bind(store)}
                                                          />}/>
 
         <Route path='/dialogs' render = { () => <Dialogs dialogs  = { state.DialogsPage.dialogs }

@@ -8,7 +8,7 @@ export const Navbar: React.FC<NavbarPageType> = (props) => {
     return (
         <nav className={s.nav}>
             <ul>
-              { props.navbar.map(el => {
+              { props.navbar.map( el => {
                 return (<li>
                   <NavLink to = { el.menuItem } activeClassName={s.activeLink}> {el.menuItem}  </NavLink></li>)
                 }
