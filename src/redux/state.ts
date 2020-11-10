@@ -1,3 +1,7 @@
+import profileReducer, {addPostAC, changeNewTextAC } from "./profilepage-reducer";
+import dialogsReducer, {changeMessageBodyAC, sendMessageAC} from "./dialogspage-reducer";
+
+
 export type HeaderInfoType = {
   title: string
   logoUrl: string
@@ -9,11 +13,9 @@ type NavbarType = {
   id: number
   menuItem: string
 };
-
 export type NavbarPageType = {
   navbar: Array<NavbarType>
 };
-
 export type profileInfoType = {
   text: string
   img: string
@@ -24,7 +26,6 @@ export type PostPropsType = {
   message: string
   likesCount: number | null
 };
-
 export type ProfilePageType = {
   profileInfo: profileInfoType
   messageForNewPost: string
@@ -38,14 +39,12 @@ export type MessagesType = {
   id: number
   message: string
 };
-export type DialogPageType = {
+type DialogPageType = {
   dialogs: Array<DialogsType>
   messages: Array<MessagesType>
+  messageForNewMessage: string
 };
-
-type SideBarPageType = {
-}
-
+type SideBarPageType = {}
 export type RootStateType = {
   HeaderPage: HeaderPageType
   NavbarPage: NavbarPageType
@@ -53,31 +52,18 @@ export type RootStateType = {
   DialogsPage: DialogPageType
   SideBarPage: SideBarPageType
 };
-
 export type StoreType = {
   _state: RootStateType
   _onChange: () => void
   subscribe: (callback: () => void) => void
   getState: () => RootStateType
-  // changeNewText: (newText: string) => void
-  // addPost: ( ) => void
-  dispatch: (action:  ActionType) => void
+  dispatch: (action: ActionType ) => void
 };
 
-export type ActionType = ReturnType<typeof addPostAC> | ReturnType<typeof changeNewTextAC>
-
-export const addPostAC = (postText: string) => {
-  return{
-    type: 'ADD-POST',
-    postText: postText
-  } as const
-};
-export const changeNewTextAC = (newText: string) => {
-  return{
-    type: 'CHANGE-NEW-TEXT',
-    newText: newText
-  } as const
-};
+export type ActionType =  ReturnType<typeof changeMessageBodyAC>
+                       | ReturnType<typeof sendMessageAC>
+                       | ReturnType<typeof addPostAC>
+                       | ReturnType<typeof changeNewTextAC>
 
 const store: StoreType = {
   _state: {
@@ -105,69 +91,48 @@ const store: StoreType = {
         img: 'https://avatarko.ru/img/kartinka/2/Gubka_Bob.jpg',
         likes: 50
       },
-      messageForNewPost: '',
       posts: [
         {id: 1, message: 'hi world!!!', likesCount: 14},
         {id: 2, message: 'It\'s my first post', likesCount: 13},
         {id: 3, message: 'It\'s my secondary post', likesCount: 124},
         {id: 4, message: 'It\'s my third post', likesCount: 18}
       ],
+      messageForNewPost: '',
     },
     // page dialogs
     DialogsPage: {
       dialogs: [
         {id: 1, name: 'Dimon'},
-        {id: 1, name: 'Andrew'},
-        {id: 1, name: 'Sveta'},
-        {id: 1, name: 'Sasha'},
-        {id: 1, name: 'Viktor'},
-        {id: 1, name: 'Valera'}
+        {id: 2, name: 'Andrew'},
+        {id: 3, name: 'Sveta'},
+        {id: 4, name: 'Sasha'},
+        {id: 5, name: 'Viktor'},
+        {id: 6, name: 'Valera'}
       ],
       messages: [
         {id: 1, message: 'Nihay'},
-        {id: 1, message: 'What is you name?'},
-        {id: 1, message: 'when?'},
-        {id: 1, message: 'Whot?'},
-        {id: 1, message: 'Ho?'}
-      ]
+        {id: 2, message: 'What is you name?'},
+        {id: 3, message: 'when?'},
+        {id: 4, message: 'Whot?'},
+        {id: 5, message: 'Ho?'}
+      ],
+      messageForNewMessage: ''
     },
-    SideBarPage: { }
+    SideBarPage: {}
   },
-  // changeNewText ( newText: string ) {
-  //   this._state.ProfilePage.messageForNewPost = newText;
-  //   store._onChange();
-  // },
-  // addPost () {
-  //   const newPost: PostPropsType = {
-  //     id: new Date().getTime(),
-  //     message: postText,
-  //     likesCount: 0
-  //   }
-  //   this._state.ProfilePage.posts.push( newPost )
-  //   store._onChange();
-  // },
-  _onChange() {
+   _onChange() {
     console.log('function onChange');
   },
-  subscribe ( callback ) {
+  subscribe(callback) {
     this._onChange = callback;
   },
   getState() {
     return this._state;
   },
-  dispatch(action) {
-    if (action.type === 'ADD-POST') {
-      const newPost: PostPropsType = {
-        id: new Date().getTime(),
-        message: action.postText,
-        likesCount: 0
-      }
-      this._state.ProfilePage.posts.unshift(newPost)
-      store._onChange();
-    } else if (action.type === 'CHANGE-NEW-TEXT') {
-      this._state.ProfilePage.messageForNewPost = action.newText;
-      store._onChange();
-    }
+  dispatch(action: ActionType) {
+    this._state.ProfilePage = profileReducer( this._state.ProfilePage, action );
+    this._state.DialogsPage = dialogsReducer(this._state.DialogsPage, action );
+    this._onChange();
   }
 }
 

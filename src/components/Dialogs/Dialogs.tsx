@@ -1,20 +1,37 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, { ChangeEvent } from 'react';
 import s from './Dialogs.module.sass';
-import { DialogPageType, DialogsType, MessagesType } from './../../redux/state';
+import {ActionType, DialogsType, MessagesType } from './../../redux/state';
 import { DialogItem } from './DialogItem/DialogItem';
 import { Message } from "./Message/Message";
+import {changeMessageBodyAC, sendMessageAC} from "../../redux/dialogspage-reducer";
 
-export const Dialogs: React.FC<DialogPageType> = (props) => {
+type PropsType = {
+  dialogs: Array<DialogsType>
+  messages: Array<MessagesType>
+  messageForNewMessage: string
+  dispatch: (action: ActionType) => void
+}
 
-  const [message, setMessage] = useState('');
+export const Dialogs: React.FC<PropsType> = (props) => {
 
-  const onChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.currentTarget.value);
-  };
+  // вариант через локал стайт, вроде не очень
+  // const [message, setMessage] = useState('');
+  // const onChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setMessage(e.currentTarget.value);
+  // };
+  // const addMessage = () => {
+  //   console.log('push button addMessage');
+  //   setMessage('')
+  // };
 
+  // второй вариант чеерз state
+  const changeMessage = (e:ChangeEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value;
+    props.dispatch(changeMessageBodyAC(text));
+  }
   const addMessage = () => {
-    console.log('push button addMessage');
-  };
+    props.dispatch(sendMessageAC(props.messageForNewMessage));
+  }
 
   return (
     <div className={s.dialogs}>
@@ -24,8 +41,8 @@ export const Dialogs: React.FC<DialogPageType> = (props) => {
       <div className={s.messagesOver}>
         { props.messages.map( (mes: MessagesType ) => ( <Message id = {mes.id}  message={ mes.message}/> ))}
         <input
-          value = { message }
-          onChange= { onChangeMessage }
+          value = { props.messageForNewMessage }
+          onChange ={ changeMessage }
         />
         <button onClick = { addMessage } > reply </button>
       </div>

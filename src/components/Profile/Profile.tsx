@@ -1,16 +1,15 @@
 import React, {ChangeEvent} from 'react';
 import s from './Profile.module.sass';
 
-import {Post} from './Post';
-import {PostPropsType, profileInfoType, ActionType, changeNewTextAC, addPostAC} from "../../redux/state";
-import {type} from "os";
+import { Post } from './Post';
+import {ActionType, PostPropsType, profileInfoType } from "../../redux/state";
+import { addPostAC, changeNewTextAC } from "../../redux/profilepage-reducer";
+
 
 export type PropsType = {
   profileInfo: profileInfoType
   posts: Array<PostPropsType>
   messageForNewPost: string
-  // addPost: () => void
-  // changeNewText: (text: string) => void
   dispatch: (action: ActionType) => void
 }
 
@@ -26,12 +25,12 @@ export const Profile: React.FC<PropsType> = (props) => {
   ));
 
   const postOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    props.dispatch(changeNewTextAC(e.currentTarget.value))
+    const text = e.currentTarget.value;
+    props.dispatch(changeNewTextAC(text));
   }
 
   const addPost = () => {
     props.dispatch(addPostAC(props.messageForNewPost));
-    props.dispatch(changeNewTextAC(''));
   }
 
   return (

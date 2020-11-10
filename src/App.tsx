@@ -11,8 +11,6 @@ import store, {ActionType, StoreType} from "./redux/state";
 
 type PropsType = {
   store: StoreType
-  // addPost:()=>void
-  // changeNewText: (text:string)=> void
   dispatch: (action: ActionType) => void
 }
 
@@ -28,13 +26,14 @@ const App: React.FC<PropsType> = ( props ) => {
         <Route path='/profile' render = { () => <Profile profileInfo = { state.ProfilePage.profileInfo }
                                                          posts = {state.ProfilePage.posts}
                                                          messageForNewPost = { state.ProfilePage.messageForNewPost }
-                                                         // addPost = { props.addPost }
-                                                         // changeNewText = { props.changeNewText }
-                                                         dispatch={props.dispatch.bind(store)}
+                                                         dispatch={ props.dispatch.bind(store)}
                                                          />}/>
 
         <Route path='/dialogs' render = { () => <Dialogs dialogs  = { state.DialogsPage.dialogs }
-                                                         messages = { state.DialogsPage.messages } />}/>
+                                                         messages = { state.DialogsPage.messages }
+                                                         messageForNewMessage = { state.DialogsPage.messageForNewMessage }
+                                                         dispatch = { props.dispatch.bind(store)}
+                                                          />}/>
       </div>
     </BrowserRouter>
   );
