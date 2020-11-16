@@ -1,39 +1,30 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter, Route} from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import {Header} from './components/Header/Header';
-import {Navbar} from './components/Navbar/Navbar';
-import {Profile} from './components/Profile/Profile';
-import {Dialogs} from './components/Dialogs/Dialogs';
-
-import store, {ActionType, StoreType} from "./redux/state";
+import { Header } from './components/Header/Header';
+import { Navbar } from './components/Navbar/Navbar';
+import { ProfileContainer } from './components/Profile/ProfileContainer';
+import { DialogsContainer } from './components/Dialogs/DialogsContainer';
+import { ActionType, StoreType} from "./redux/state";
+import store from './redux/redux-store';
 
 type PropsType = {
   store: StoreType
-  dispatch: (action: ActionType) => void
+  dispatch: (action: ActionType ) => void
 }
 
-const App: React.FC<PropsType> = ( props ) => {
+const App: React.FC< PropsType > = ( props ) => {
 
   const state = props.store.getState();
 
-  return (
+   return (
     <BrowserRouter>
       <div className="App">
-        <Header title = { state.HeaderPage.HeaderInfo.title} logoUrl={ state.HeaderPage.HeaderInfo.logoUrl } />
-        <Navbar navbar = { state.NavbarPage.navbar}/>
-        <Route path='/profile' render = { () => <Profile profileInfo = { state.ProfilePage.profileInfo }
-                                                         posts = {state.ProfilePage.posts}
-                                                         messageForNewPost = { state.ProfilePage.messageForNewPost }
-                                                         dispatch={ props.dispatch.bind(store)}
-                                                         />}/>
-
-        <Route path='/dialogs' render = { () => <Dialogs dialogs  = { state.DialogsPage.dialogs }
-                                                         messages = { state.DialogsPage.messages }
-                                                         messageForNewMessage = { state.DialogsPage.messageForNewMessage }
-                                                         dispatch = { props.dispatch.bind(store)}
-                                                          />}/>
+        <Header />
+        <Navbar />
+        <Route path='/profile' render = { () => <ProfileContainer store = {props.store} />}/>
+        <Route path='/dialogs' render = { () => <DialogsContainer store = {props.store} />}/>
       </div>
     </BrowserRouter>
   );

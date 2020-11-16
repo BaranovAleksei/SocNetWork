@@ -39,7 +39,7 @@ export type MessagesType = {
   id: number
   message: string
 };
-type DialogPageType = {
+export type DialogPageType = {
   dialogs: Array<DialogsType>
   messages: Array<MessagesType>
   messageForNewMessage: string
@@ -60,7 +60,7 @@ export type StoreType = {
   dispatch: (action: ActionType ) => void
 };
 
-export type ActionType =  ReturnType<typeof changeMessageBodyAC>
+export type ActionType = ReturnType<typeof changeMessageBodyAC>
                        | ReturnType<typeof sendMessageAC>
                        | ReturnType<typeof addPostAC>
                        | ReturnType<typeof changeNewTextAC>

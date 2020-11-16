@@ -1,4 +1,4 @@
-import {ActionType, PostPropsType} from "./state";
+import {ActionType, PostPropsType, ProfilePageType} from "./state";
 
 export const changeNewTextAC = (textChange: string) => {
   return {
@@ -13,7 +13,23 @@ export const addPostAC = (postText: string) => {
   } as const
 };
 
-const profileReducer = (state: any, action: ActionType) => {
+const initialState: ProfilePageType = {
+  profileInfo: {
+    text: 'BLA-bla-bol',
+    img: 'https://avatarko.ru/img/kartinka/2/Gubka_Bob.jpg',
+    likes: 50
+  },
+  posts: [
+    {id: 1, message: 'hi world!!!', likesCount: 14},
+    {id: 2, message: 'It\'s my first post', likesCount: 13},
+    {id: 3, message: 'It\'s my secondary post', likesCount: 124},
+    {id: 4, message: 'It\'s my third post', likesCount: 18}
+  ],
+  messageForNewPost: ''
+}
+
+const profileReducer = (state = initialState, action: ActionType) => {
+
   switch (action.type) {
 
     case 'ADD-POST':

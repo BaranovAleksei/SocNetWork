@@ -1,7 +1,11 @@
 import React from 'react';
 import s from './Profile.module.sass'
 
-import { PostPropsType } from "../../redux/state";
+type PostPropsType = {
+  id: number | null
+  message: string
+  likesCount: number | null
+};
 
 export function Post ( props: PostPropsType ) {
   return (

@@ -1,22 +1,42 @@
-import React, {ChangeEvent} from 'react';
+import React, { ChangeEvent } from 'react';
 import s from './Profile.module.sass';
 
 import { Post } from './Post';
-import {ActionType, PostPropsType, profileInfoType } from "../../redux/state";
-import { addPostAC, changeNewTextAC } from "../../redux/profilepage-reducer";
+import { ActionType } from "../../redux/state";
 
+type profileInfoType = {
+  text: string
+  img: string
+  likes: number | null
+};
 
-export type PropsType = {
+type PostPropsType = {
+  id: number | null
+  message: string
+  likesCount: number | null
+};
+
+type ProfilePropsType = {
   profileInfo: profileInfoType
   posts: Array<PostPropsType>
   messageForNewPost: string
-  dispatch: (action: ActionType) => void
+  // dispatch: (action: ActionType) => void
+  postOnChange: ( text: string ) => void
+  addPost: () => void
 }
 
-export const Profile: React.FC<PropsType> = (props) => {
+export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) => {
 
-  const mappedPosts = props.posts.map((el: PostPropsType) => (
+  const postOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value;
+    props.postOnChange( text );
+  }
 
+  const addPost = () => {
+    props.addPost();
+  }
+
+  const mappedPosts = props.posts.map( (el: PostPropsType) => (
     <Post
       id={el.id}
       message={el.message}
@@ -24,29 +44,21 @@ export const Profile: React.FC<PropsType> = (props) => {
     />
   ));
 
-  const postOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const text = e.currentTarget.value;
-    props.dispatch(changeNewTextAC(text));
-  }
-
-  const addPost = () => {
-    props.dispatch(addPostAC(props.messageForNewPost));
-  }
 
   return (
-    <div className={s.profile}>
-      <img className={s.imgProfile} src={props.profileInfo.img} alt=""/>
+    <div className = {s.profile}>
+      <img className = {s.imgProfile} src = { props.profileInfo.img} alt=""/>
       <div className={s.description}>
         <span>{props.profileInfo.text}</span>
       </div>
       <div className={s.newPost}>
-        <textarea value={props.messageForNewPost}
-                  onChange={postOnChange}>
-        </textarea>
-        <button onClick={addPost}> add post </button>
+        <input value={ props.messageForNewPost }
+                  onChange={ postOnChange }>
+        </input>
+        <button onClick={ addPost }> add post </button>
       </div>
       <div className={s.OverlayPosts}>
-        {mappedPosts}
+        { mappedPosts }
       </div>
     </div>
   )
