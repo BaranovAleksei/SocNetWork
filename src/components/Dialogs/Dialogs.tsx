@@ -9,7 +9,7 @@ type DialogsPropsType = {
   messages: Array<MessagesType>
   messageForNewMessage: string
   changeMessage: ( text: string) => void
-  addMessage: () => void
+  addMessage: (string: string ) => void
 }
 
 export const Dialogs: React.FC< DialogsPropsType > = (props) => {
@@ -18,8 +18,8 @@ export const Dialogs: React.FC< DialogsPropsType > = (props) => {
     const text = e.currentTarget.value;
     props.changeMessage( text );
   };
-  const addMessage = () => {
-    props.addMessage();
+  const addMessage = (newMessage: string) => {
+    props.addMessage(newMessage);
   };
 
   return (
@@ -33,7 +33,7 @@ export const Dialogs: React.FC< DialogsPropsType > = (props) => {
           value = { props.messageForNewMessage }
           onChange={ changeMessage }
         />
-        <button onClick = { addMessage } > reply </button>
+        <button onClick = { () => {addMessage(props.messageForNewMessage)} } > add Message </button>
       </div>
     </div>
   )

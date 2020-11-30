@@ -20,10 +20,10 @@ const initialState: ProfilePageType = {
     likes: 50
   },
   posts: [
-    {id: 1, message: 'hi world!!!', likesCount: 14},
-    {id: 2, message: 'It\'s my first post', likesCount: 13},
-    {id: 3, message: 'It\'s my secondary post', likesCount: 124},
-    {id: 4, message: 'It\'s my third post', likesCount: 18}
+    { id: 1, message: 'hi world!!!', likesCount: 14 },
+    { id: 2, message: 'It\'s my first post', likesCount: 13 },
+    { id: 3, message: 'It\'s my secondary post', likesCount: 124 },
+    { id: 4, message: 'It\'s my third post', likesCount: 18 }
   ],
   messageForNewPost: ''
 }
@@ -38,13 +38,17 @@ const profileReducer = (state = initialState, action: ActionType) => {
         "message": action.postText,
         "likesCount": 0
       }
-      state.posts.unshift(newPost);
-      state.messageForNewPost = '';
-      return state;
+      return {
+        ...state,
+        messageForNewPost: '',
+        posts: [ newPost,...state.posts]
+      }
 
     case 'CHANGE-NEW-POST':
-      state.messageForNewPost = action.newText;
-      return state;
+      return {
+        ...state,
+        messageForNewPost: action.newText
+      }
 
     default:
       return state;

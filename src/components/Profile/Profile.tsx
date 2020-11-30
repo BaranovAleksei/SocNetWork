@@ -1,28 +1,23 @@
 import React, { ChangeEvent } from 'react';
-import s from './Profile.module.sass';
-
 import { Post } from './Post';
-import { ActionType } from "../../redux/state";
+import s from './Profile.module.sass';
 
 type profileInfoType = {
   text: string
   img: string
   likes: number | null
 };
-
 type PostPropsType = {
   id: number | null
   message: string
   likesCount: number | null
 };
-
 type ProfilePropsType = {
   profileInfo: profileInfoType
   posts: Array<PostPropsType>
   messageForNewPost: string
-  // dispatch: (action: ActionType) => void
   postOnChange: ( text: string ) => void
-  addPost: () => void
+  addPost: (postText: string) => void
 }
 
 export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) => {
@@ -32,8 +27,8 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
     props.postOnChange( text );
   }
 
-  const addPost = () => {
-    props.addPost();
+  const addPost = ( postText: string) => {
+    props.addPost( postText );
   }
 
   const mappedPosts = props.posts.map( (el: PostPropsType) => (
@@ -55,7 +50,7 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
         <input value={ props.messageForNewPost }
                   onChange={ postOnChange }>
         </input>
-        <button onClick={ addPost }> add post </button>
+        <button onClick={ () => { addPost(props.messageForNewPost) }}> add post </button>
       </div>
       <div className={s.OverlayPosts}>
         { mappedPosts }

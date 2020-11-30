@@ -1,20 +1,22 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import s from './../Navbar/Navbar.module.sass';
+import {v1} from "uuid";
 
 type NavbarType = {
-  id: number
+  id: string
   menuItem: string
 };
 
 export const Navbar: React.FC<any> = () => {
 
   const navbar: Array<NavbarType> =  [
-      {id: 1, menuItem: 'profile'},
-      {id: 2, menuItem: 'dialogs'},
-      {id: 3, menuItem: 'news'},
-      {id: 4, menuItem: 'music'},
-      {id: 5, menuItem: 'setting'}
+      {id: v1(), menuItem: 'profile'},
+      {id: v1(), menuItem: 'users'},
+      {id: v1(), menuItem: 'dialogs'},
+      {id: v1(), menuItem: 'news'},
+      {id: v1(), menuItem: 'music'},
+      {id: v1(), menuItem: 'setting'}
     ];
 
     return (

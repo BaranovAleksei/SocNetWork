@@ -33,22 +33,25 @@ const initialState: DialogPageType = {
   messageForNewMessage: ''
 }
 
-const dialogsReducer = (state = initialState , action: ActionType) => {
+const dialogsReducer = (state = initialState , action: ActionType): DialogPageType  => {
   switch (action.type) {
 
     case "CHANGE-NEW-MESSAGE":
-      state.messageForNewMessage = action.messageForNewMessage;
-      return state;
+      return {
+        ...state,
+        messageForNewMessage: action.messageForNewMessage
+      }
 
     case "SEND-MESSAGE":
       const newMessage: MessagesType = {
         'id': new Date().getTime(),
         'message': action.postMessage
       }
-      state.messageForNewMessage = '';
-      state.messages.push(newMessage);
-      return  state;
-
+      return {
+        ...state,
+        messageForNewMessage: '',
+        messages: [...state.messages, newMessage]
+      }
     default:
       return state;
   }
