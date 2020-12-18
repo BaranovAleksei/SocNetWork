@@ -1,14 +1,27 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
-import { Users } from "./Users";
 import {followtAC, setUsersAC, unfollowAC,
         setCurrentPageAC,setTotalUsersCountAC, UserType} from "../../redux/userspage-reducer";
+import axios from "axios";
+import {Users} from "./Users";
+
+// export type UsersAPIPropsType = {
+//   users: Array<UserType>
+//   pageSize: number
+//   totalUsersCount: number
+//   currentPage: number
+//   follow: (userId: string) => void
+//   unfollow: (userId: string) => void
+//   setUsers: (users: Array<UserType>) => void
+//   setTotalUsersCount: (totalCount: number) => void
+//   setCurrentPage: (currentPage: number) => void
+// }
 
 type mapStateToPropsType = {
   users: Array<UserType>
   pageSize: number
-  totalUserCount: number
+  totalUsersCount: number
   currentPage: number
 }
 
@@ -22,11 +35,44 @@ type mapDispatchToPropsType = {
 
 type UsersContainerPT = mapDispatchToPropsType & mapStateToPropsType
 
+class UsersContainer extends React.Component<UsersContainerPT> {
+
+  componentDidMount() {
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}
+    &count=${this.props.pageSize}`)
+      .then( (response: any) => {
+        this.props.setUsers(response.data.items);
+        this.props.setTotalUsersCount(response.data.totalCount);
+      })
+  }
+  onPageChanged  = ( pageNumber: number ) => {
+    this.props.setCurrentPage( pageNumber )
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${ pageNumber }
+    &count=${this.props.pageSize}`)
+      .then( (response: any) => {
+        this.props.setUsers(response.data.items);
+      })
+  }
+
+  render() {
+    return <Users
+      users={this.props.users}
+      totalUsersCount = {this.props.totalUsersCount}
+      pageSize={this.props.pageSize}
+      currentPage={this.props.currentPage}
+      onPageChanged = {this.onPageChanged}
+      setCurrentPage={this.props.setCurrentPage}
+      follow={this.props.follow}
+      unfollow={this.props.unfollow}
+    />
+  }
+}
+
 const mapStateToProps = (state: AllAppTypes ):mapStateToPropsType => {
   return {
     users: state.UsersPage.users,
     pageSize: state.UsersPage.pageSize,
-    totalUserCount: state.UsersPage.totalUserCount,
+    totalUsersCount: state.UsersPage.totalUserCount,
     currentPage: state.UsersPage.currentPage
   }
 }
@@ -51,25 +97,25 @@ const mapDispatchToProps = ( dispatch: any ): mapDispatchToPropsType => {
   }
 }
 
-const UsersContainer: React.FC<UsersContainerPT>= ({ users ,
-                                                     follow, unfollow,
-                                                     setUsers, pageSize,
-                                                     totalUserCount,
-                                                     setCurrentPage,
-                                                     setTotalUsersCount,
-                                                     currentPage}) => {
-  return (
-    <Users users = {users}
-           follow = {follow}
-           unfollow = {unfollow}
-           setUsers = {setUsers}
-           pageSize = {pageSize}
-           totalUserCount = {totalUserCount}
-           setCurrentPage = {setCurrentPage}
-           setTotalUsersCount = {setTotalUsersCount}
-           currentPage = {currentPage}
-    />
-  )
-}
+// const UsersContainer: React.FC<UsersContainerPT>= ({ users ,
+//                                                      follow, unfollow,
+//                                                      setUsers, pageSize,
+//                                                      totalUsersCount,
+//                                                      setCurrentPage,
+//                                                      setTotalUsersCount,
+//                                                      currentPage}) => {
+//   return (
+//     < users = {users}
+//                        follow = {follow}
+//                        unfollow = {unfollow}
+//                        setUsers = {setUsers}
+//                        pageSize = {pageSize}
+//                        totalUsersCount = {totalUsersCount}
+//                        setCurrentPage = {setCurrentPage}
+//                        setTotalUsersCount = {setTotalUsersCount}
+//                        currentPage = {currentPage}
+//     />
+//   )
+// }
 
 export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps, mapDispatchToProps)(UsersContainer);
