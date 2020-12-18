@@ -28,6 +28,12 @@ export const setTotalUsersCountAC = ( totalCount: number) => {
     totalCount
   }
 }
+export const setIsFetchingAC = ( isFetching: boolean) => {
+  return {
+    type: 'TOGGLE-IS-FETCHING',
+    isFetching
+  }
+}
 type PhotoType = {
   small: string
   large: string
@@ -44,20 +50,23 @@ type UsersPageTP = {
   pageSize: number
   totalUserCount: number
   currentPage: number
+  isFetching: boolean
 }
 
 const initialState: UsersPageTP = {
   users: [],
   pageSize: 5,
   totalUserCount: 0,
-  currentPage: 1
+  currentPage: 1,
+  isFetching: true
 }
 
 type ActionTypeUsersPage = ReturnType<typeof followtAC>
                          & ReturnType<typeof unfollowAC>
                          & ReturnType<typeof setCurrentPageAC>
                          & ReturnType<typeof setTotalUsersCountAC>
-                         & ReturnType<typeof setUsersAC>;
+                         & ReturnType<typeof setUsersAC>
+                         & ReturnType<typeof setIsFetchingAC>;
 
 const usersReducer = (state = initialState, action: ActionTypeUsersPage): UsersPageTP => {
 
@@ -91,6 +100,11 @@ const usersReducer = (state = initialState, action: ActionTypeUsersPage): UsersP
       return {
         ...state,
         totalUserCount: action.totalCount
+      }
+    case 'TOGGLE-IS-FETCHING':
+      return{
+        ...state,
+        isFetching: action.isFetching
       }
     default:
       return state;
