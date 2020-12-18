@@ -1,13 +1,13 @@
 import React from 'react';
 import s from './Header.module.sass';
-// import {HeaderInfoType} from './../../redux/state'
+import krasty from '../../img/krasty.png'
 
 export const Header: React.FC<any> = (props) => {
 
   const HeaderPage = {
     HeaderInfo: {
-      title: 'Social Network',
-      logoUrl: 'https://regnum.ru/uploads/pictures/news/2020/02/08/regnum_picture_1581171734102077_normal.png'
+      title: 'At the bottom of the Sea',
+      logoUrl: krasty
     }
   };
     return (
