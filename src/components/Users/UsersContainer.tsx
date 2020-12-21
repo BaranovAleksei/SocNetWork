@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
 import {
-  followtAC, setUsersAC, unfollowAC,
-  setCurrentPageAC, setTotalUsersCountAC, UserType, setIsFetchingAC
+  follow, setUsers, unfollow,
+  setCurrentPage, setTotalUsersCount, UserType, setIsFetching
 } from "../../redux/userspage-reducer";
 import axios from "axios";
 import {Users} from "./Users";
@@ -77,27 +77,31 @@ const mapStateToProps = (state: AllAppTypes ):mapStateToPropsType => {
   }
 }
 
-const mapDispatchToProps = ( dispatch: any ): mapDispatchToPropsType => {
-  return {
-    follow: (userId: string) => {
-      dispatch(followtAC( userId ))
-    },
-    unfollow: (userId: string) => {
-      dispatch(unfollowAC(userId))
-    },
-    setUsers: (users: Array<UserType>) => {
-      dispatch(setUsersAC(users))
-    },
-    setCurrentPage: (currentPage: number) => {
-      dispatch(setCurrentPageAC(currentPage))
-    },
-    setTotalUsersCount: (totalCount: number) => {
-      dispatch(setTotalUsersCountAC(totalCount))
-    },
-    setIsFetching: (isFetching: boolean   ) => {
-      dispatch(setIsFetchingAC(isFetching))
-    }
-  }
-}
+// const mapDispatchToProps = ( dispatch: any ): mapDispatchToPropsType => {
+//   return {
+//     follow: (userId: string) => {
+//       dispatch(followtAC( userId ))
+//     },
+//     unfollow: (userId: string) => {
+//       dispatch(unfollowAC(userId))
+//     },
+//     setUsers: (users: Array<UserType>) => {
+//       dispatch(setUsersAC(users))
+//     },
+//     setCurrentPage: (currentPage: number) => {
+//       dispatch(setCurrentPageAC(currentPage))
+//     },
+//     setTotalUsersCount: (totalCount: number) => {
+//       dispatch(setTotalUsersCountAC(totalCount))
+//     },
+//     setIsFetching: (isFetching: boolean   ) => {
+//       dispatch(setIsFetchingAC(isFetching))
+//     }
+//   }
+// }
 
-export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>
+              (mapStateToProps,
+                {follow, unfollow, setCurrentPage, setTotalUsersCount,
+              setIsFetching, setUsers} )
+              (UsersContainer);

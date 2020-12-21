@@ -33,6 +33,7 @@ const ProfileContainer: React.FC<ProfileContainerPT> = ( {  profileInfo,
                                                             postOnChange,
                                                             addPost }) => {
   return (
+
     <Profile profileInfo={ profileInfo }
              posts={ posts }
              messageForNewPost={ messageForNewPost }
