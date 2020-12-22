@@ -1,7 +1,7 @@
 import React  from 'react';
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
-import {changeMessageBodyAC, sendMessageAC} from "../../redux/dialogspage-reducer";
+import {changeMessageBody, sendMessage} from "../../redux/dialogspage-reducer";
 import { AllAppTypes } from '../../redux/redux-store';
 
 // type DialogsContainerPropsType = {
@@ -69,14 +69,15 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
     messageForNewMessage: state.DialogsPage.messageForNewMessage
   }
 }
+
 const mapDispatchToProps = ( dispatch: any): mapDispatchToPropsType => {
   return {
     changeMessage:  ( text: string ) => {
-      const action = changeMessageBodyAC(text);
+      const action = changeMessageBody(text);
       dispatch (action);
     },
     addMessage: (newMessage: string) => {
-      const action = sendMessageAC( newMessage)
+      const action = sendMessage( newMessage)
       dispatch( action );
     }
   }

@@ -1,6 +1,5 @@
 import React from "react"
 import {UserType} from "../../redux/userspage-reducer"
-
 import defaultImg from '../../img/defaultImg.png'
 import s from './User.module.sass'
 
@@ -16,7 +15,7 @@ export type UsersPropsType = {
   onPageChanged: (page: number) => void
 }
 
-export const Users = ( props:UsersPropsType ) => {
+export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
 
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
     let pages = []

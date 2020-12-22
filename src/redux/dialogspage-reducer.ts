@@ -1,18 +1,20 @@
 import { ActionType, DialogPageType, MessagesType} from "./state";
 
 
-export const changeMessageBodyAC = (textNewMessage: string) => {
+export const changeMessageBody = (textNewMessage: string) => {
   return {
     type: 'CHANGE-NEW-MESSAGE',
     messageForNewMessage: textNewMessage
   }as const
 };
-export const sendMessageAC = (newMessage: string) => {
+export const sendMessage = (newMessage: string) => {
   return {
     type: 'SEND-MESSAGE',
     postMessage: newMessage
   }as const
 };
+
+export type DialogsPageActionType = ReturnType<typeof changeMessageBody> & ReturnType<typeof sendMessage>
 
 const initialState: DialogPageType = {
   dialogs: [
@@ -33,7 +35,7 @@ const initialState: DialogPageType = {
   messageForNewMessage: ''
 }
 
-const dialogsReducer = (state = initialState , action: ActionType): DialogPageType  => {
+const dialogsReducer = (state = initialState , action: DialogsPageActionType): DialogPageType  => {
   switch (action.type) {
 
     case "CHANGE-NEW-MESSAGE":

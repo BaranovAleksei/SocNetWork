@@ -1,65 +1,67 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import { Profile } from "./Profile";
-import { addPostAC, changeNewTextAC } from "../../redux/profilepage-reducer";
-import {connect} from "react-redux";
-import {AllAppTypes} from "../../redux/redux-store";
+import { addPost, postOnChange, setUserProfile, setIsFetching,
+         PostPropsType, profileInfoType} from "../../redux/profilepage-reducer";
+import { connect } from "react-redux";
+import { AllAppTypes } from "../../redux/redux-store";
+import axios from "axios";
+import {Preloader} from "../common/Preloader/Preloader";
 
-
-type profileInfoType = {
-  text: string
-  img: string
-  likes: number | null
-}
-type PostPropsType = {
-  id: number | null
-  message: string
-  likesCount: number | null
-}
 type mapStateToPropsType = {
-  profileInfo: profileInfoType
+  profileInfo: profileInfoType | null
   posts: Array<PostPropsType>
   messageForNewPost: string
+  isFetching: boolean
 }
 type mapDispatchToPropsType = {
   postOnChange: ( text: string ) => void
   addPost: (postText: string) => void
+  setUserProfile: (profileInfo: any ) => void
+  setIsFetching: (isFetching: boolean) => void
 }
 
 type ProfileContainerPT = mapStateToPropsType & mapDispatchToPropsType
 
-const ProfileContainer: React.FC<ProfileContainerPT> = ( {  profileInfo,
-                                                            posts,
-                                                            messageForNewPost,
-                                                            postOnChange,
-                                                            addPost }) => {
-  return (
+class ProfileContainer extends React.Component<ProfileContainerPT> {
 
-    <Profile profileInfo={ profileInfo }
-             posts={ posts }
-             messageForNewPost={ messageForNewPost }
-             postOnChange={ postOnChange }
-             addPost={ addPost } />
-  )
+  componentDidMount() {
+    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/2`)
+      .then( (response: any) => {
+        this.props.setIsFetching(false);
+        this.props.setUserProfile(response.data);
+      })
+  }
+  postOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value;
+    this.props.postOnChange( text );
+  }
+  addPost = ( postText: string) => {
+    this.props.addPost( postText );
+  }
+
+  render () {
+    return <>
+      {this.props.isFetching ? <Preloader/> : null }
+      <Profile
+        isFetching = {this.props.isFetching}
+        profileInfo = { this.props.profileInfo}
+        posts = { this.props.posts }
+        messageForNewPost={ this.props.messageForNewPost }
+        postOnChange={ this.postOnChange }
+        addPost={ this.addPost }
+      />
+    </>
+  }
 }
+
 const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
   return {
     profileInfo: state.ProfilePage.profileInfo,
     posts :  state.ProfilePage.posts,
-    messageForNewPost: state.ProfilePage.messageForNewPost
+    messageForNewPost: state.ProfilePage.messageForNewPost,
+    isFetching: state.ProfilePage.isFetching
   }
 }
 
-const mapDispatchToProps = ( dispatch: any ): mapDispatchToPropsType => {
-  return {
-    postOnChange:  ( text: string ) => {
-      const action = changeNewTextAC( text );
-      dispatch( action );
-    },
-    addPost: (postText: string) => {
-      let action = addPostAC(postText)
-      dispatch(action);
-    }
-  }
-}
-
-export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps, mapDispatchToProps)(ProfileContainer);
+export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps,
+  { addPost, postOnChange, setUserProfile, setIsFetching })(ProfileContainer);

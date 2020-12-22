@@ -1,11 +1,6 @@
 import React from 'react';
 import s from './Profile.module.sass'
-
-type PostPropsType = {
-  id: number | null
-  message: string
-  likesCount: number | null
-};
+import {PostPropsType} from "../../redux/profilepage-reducer";
 
 export function Post ( props: PostPropsType ) {
   return (

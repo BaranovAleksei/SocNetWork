@@ -1,5 +1,5 @@
-import profileReducer, {addPostAC, changeNewTextAC } from "./profilepage-reducer";
-import dialogsReducer, {changeMessageBodyAC, sendMessageAC} from "./dialogspage-reducer";
+import profileReducer, { addPost , postOnChange } from "./profilepage-reducer";
+import dialogsReducer, { changeMessageBody, sendMessage } from "./dialogspage-reducer";
 
 
 export type HeaderInfoType = {
@@ -60,10 +60,10 @@ export type StoreType = {
   dispatch: (action: ActionType ) => void
 };
 
-export type ActionType = ReturnType<typeof changeMessageBodyAC>
-                       | ReturnType<typeof sendMessageAC>
-                       | ReturnType<typeof addPostAC>
-                       | ReturnType<typeof changeNewTextAC>
+export type ActionType = ReturnType<typeof changeMessageBody>
+                       & ReturnType<typeof sendMessage>
+                       // | ReturnType<typeof addPost>
+                       // | ReturnType<typeof postOnChange>
 
 const store: StoreType = {
   _state: {
@@ -130,9 +130,9 @@ const store: StoreType = {
     return this._state;
   },
   dispatch(action: ActionType) {
-    this._state.ProfilePage = profileReducer( this._state.ProfilePage, action );
+    // this._state.ProfilePage = profileReducer( this._state.ProfilePage, action );
     this._state.DialogsPage = dialogsReducer(this._state.DialogsPage, action );
-    this._onChange();
+    // this._onChange();
   }
 }
 
