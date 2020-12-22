@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
 import axios from "axios";
 import {Preloader} from "../common/Preloader/Preloader";
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 type mapStateToPropsType = {
   profileInfo: profileInfoType | null
@@ -22,15 +23,27 @@ type mapDispatchToPropsType = {
 
 type ProfileContainerPT = mapStateToPropsType & mapDispatchToPropsType
 
-class ProfileContainer extends React.Component<ProfileContainerPT> {
+type PathParamsType = {
+  userId: string
+}
+
+type PropsType = RouteComponentProps<PathParamsType> & ProfileContainerPT
+
+class ProfileContainer extends React.Component<PropsType> {
 
   componentDidMount() {
-    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/2`)
+
+    let userId = this.props.match.params.userId
+    if (!userId) {
+      userId = '2';
+    }
+    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
       .then( (response: any) => {
         this.props.setIsFetching(false);
         this.props.setUserProfile(response.data);
-      })
+      });
   }
+
   postOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const text = e.currentTarget.value;
     this.props.postOnChange( text );
@@ -63,5 +76,7 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
   }
 }
 
+const WithRouterProfileContainer = withRouter(ProfileContainer)
+
 export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps,
-  { addPost, postOnChange, setUserProfile, setIsFetching })(ProfileContainer);
+  { addPost, postOnChange, setUserProfile, setIsFetching })(WithRouterProfileContainer);

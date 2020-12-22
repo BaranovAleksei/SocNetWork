@@ -20,12 +20,6 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
        <div className={s.description}>
          <span>{props.profileInfo?.aboutMe}</span>
        </div>
-       <div className={s.newPost}>
-         <input value={ props.messageForNewPost }
-                onChange={ props.postOnChange }>
-         </input>
-         <button onClick={ () => { props.addPost(props.messageForNewPost) }}> add post </button>
-       </div>
        <div className={s.OverlayContact}>
          <ul>
            { props.profileInfo?.contacts.facebook ?
@@ -56,6 +50,12 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
              <li><a href={props.profileInfo?.contacts.website}>
              {props.profileInfo?.contacts.website}</a></li> : null }
          </ul>
+       </div>
+       <div className={s.newPost}>
+         <input value={ props.messageForNewPost }
+                onChange={ props.postOnChange }>
+         </input>
+         <button onClick={ () => { props.addPost(props.messageForNewPost) }}> add post </button>
        </div>
        <div className={s.OverlayPosts}>
          { props.posts.map( (el: PostPropsType) => (
