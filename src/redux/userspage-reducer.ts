@@ -71,16 +71,9 @@ type ActionTypeUsersPage = ReturnType<typeof follow>
 const usersReducer = (state = initialState, action: ActionTypeUsersPage): UsersPageTP => {
 
   switch (action.type) {
-    case 'SET-CURRENT-PAGE':
-      return {...state, currentPage: action.currentPage}
-    case 'SET-USERS':
-      return {
-        ...state,
-        users: [...action.users]
-      }
     case 'FOLLOW':
       return {
-      ...state,
+        ...state,
         users: state.users.map( u => {
           if (u.id === action.userId) {
             return {...u, followed: true}
@@ -96,6 +89,12 @@ const usersReducer = (state = initialState, action: ActionTypeUsersPage): UsersP
           } return u;
         })
       }
+    case 'SET-USERS':
+      return {
+        ...state, users: action.users
+      }
+    case 'SET-CURRENT-PAGE':
+      return {...state, currentPage: action.currentPage}
     case 'SET-TOTAL-USER-COUNT':
       return {
         ...state,
