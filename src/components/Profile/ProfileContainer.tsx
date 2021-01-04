@@ -37,7 +37,6 @@ class ProfileContainer extends React.Component<PropsType> {
     if (!userId) {
       userId = 2;
     }
-    debugger
     axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
       .then( (response: any) => {
         this.props.setIsFetching(false);

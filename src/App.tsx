@@ -2,17 +2,16 @@ import React from 'react';
 import './App.css';
 import { Route } from 'react-router-dom';
 
-import { Header } from './components/Header/Header';
 import { Navbar } from './components/Navbar/Navbar';
 import ProfileContainer  from './components/Profile/ProfileContainer';
 import DialogsContainer  from './components/Dialogs/DialogsContainer';
 import UsersContainer from "./components/Users/UsersContainer";
-
+import HeaderContainer from "./components/Header/HeaderContainer";
 
 const App: React.FC<any> = () => {
 	return (
 		<div className="App">
-			<Header />
+			<HeaderContainer />
 			<Navbar />
 			<Route path='/profile/:userId?' render = { () => <ProfileContainer />}/>
 			<Route path='/dialogs' render = { () => <DialogsContainer />}/>
