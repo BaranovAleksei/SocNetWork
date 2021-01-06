@@ -3,9 +3,7 @@ import {UserType} from "../../redux/userspage-reducer"
 import defaultImg from '../../img/defaultImg.png'
 import s from './User.module.sass'
 import { NavLink } from "react-router-dom"
-import axios from "axios";
 import {usersAPI} from "../../api/api";
-
 
 export type UsersPropsType = {
   users: Array<UserType>
@@ -16,6 +14,8 @@ export type UsersPropsType = {
   unfollow: (userId: string) => void
   setCurrentPage: (currentPage: number) => void
   onPageChanged: (page: number) => void
+  followingInProgress: Array<string>
+  toggleFollowingProgress: (followingInProgress: boolean, id: string) => void
 }
 
 export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
@@ -42,8 +42,10 @@ export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
          </div>
          <div>
            { u.followed ?
-             <button onClick={ () => {
 
+             <button disabled = { props.followingInProgress.some( id => id === u.id )} onClick={ () => {
+               props.toggleFollowingProgress(true, u.id)
+                debugger
                // axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
                //   { withCredentials: true,
                //      headers: {
@@ -56,14 +58,18 @@ export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
                //       props.unfollow(u.id)
                //     }
                //   })
+
                usersAPI.delete( u.id )
                  .then( (data: any) => {
                    if (data.resultCode === 0) {
                      props.unfollow( u.id )
                    }
+                   props.toggleFollowingProgress(false, u.id)
                  })
                }}>Unfollow
-             </button> : <button onClick={ () => {
+             </button> : <button  disabled = { props.followingInProgress.some(id => id === u.id)} onClick={ () => {
+               props.toggleFollowingProgress(true, u.id )
+
                // axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {},
                //   { withCredentials: true,
                //            headers: {
@@ -76,11 +82,13 @@ export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
                //       props.follow(u.id)
                //     }
                //   })
+
                usersAPI.post(u.id)
                  .then( (data: any) => {
                    if (data.resultCode === 0) {
                      props.follow(u.id)
                    }
+                   props.toggleFollowingProgress(false, u.id)
                  })
                }}>Follow
              </button>

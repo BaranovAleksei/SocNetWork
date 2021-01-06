@@ -1,3 +1,4 @@
+
 export const setCurrentPage = (currentPage: number) => {
   return {
     type: 'SET-CURRENT-PAGE',
@@ -34,6 +35,13 @@ export const setIsFetching = ( isFetching: boolean) => {
     isFetching
   }
 }
+export const toggleFollowingProgress = ( followingInProgress: boolean, id: string) => {
+  return {
+    type: 'FOLLOWING-IN-PROGRESS',
+    followingInProgress,
+    id
+  }
+}
 type PhotoType = {
   small: string
   large: string
@@ -51,6 +59,7 @@ type UsersPageTP = {
   totalUserCount: number
   currentPage: number
   isFetching: boolean
+  followingInProgress: Array<string>
 }
 
 const initialState: UsersPageTP = {
@@ -58,7 +67,8 @@ const initialState: UsersPageTP = {
   pageSize: 5,
   totalUserCount: 0,
   currentPage: 1,
-  isFetching: true
+  isFetching: true,
+  followingInProgress: []
 }
 
 type ActionTypeUsersPage = ReturnType<typeof follow>
@@ -66,7 +76,8 @@ type ActionTypeUsersPage = ReturnType<typeof follow>
                          & ReturnType<typeof setCurrentPage>
                          & ReturnType<typeof setTotalUsersCount>
                          & ReturnType<typeof setUsers>
-                         & ReturnType<typeof setIsFetching>;
+                         & ReturnType<typeof setIsFetching>
+                         & ReturnType<typeof toggleFollowingProgress>
 
 const usersReducer = (state = initialState, action: ActionTypeUsersPage): UsersPageTP => {
 
@@ -104,6 +115,13 @@ const usersReducer = (state = initialState, action: ActionTypeUsersPage): UsersP
       return{
         ...state,
         isFetching: action.isFetching
+      }
+    case 'FOLLOWING-IN-PROGRESS':
+      return {
+        ...state,
+        followingInProgress: action.followingInProgress
+          ? [...state.followingInProgress, action.userId]
+          : [...state.followingInProgress.filter(id => id !== action.userId)]
       }
     default:
       return state;
