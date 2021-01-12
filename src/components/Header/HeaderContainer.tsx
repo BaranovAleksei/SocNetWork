@@ -7,13 +7,13 @@ import {usersAPI} from "../../api/api";
 import axios from "axios";
 
 type mapStateToPT = {
-	userId: string | null
+	userId: number | null
 	email: string | null
 	isAuth: boolean
 	login: string | null
 }
 type mapDispatchToPT= {
-	setAuthUserData: (id: string, email: any, login: any) => void
+	setAuthUserData: (id: number, email: any, login: any) => void
 }
 
 export type AuthContainerType = mapStateToPT & mapDispatchToPT

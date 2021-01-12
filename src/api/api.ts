@@ -21,13 +21,13 @@ export const usersAPI = {
         return response.data
       })
   },
-  delete(id: string){
+  delete(id: number){
     return instance.delete(`follow/${id}`)
       .then(response => {
         return response.data
       })
   },
-  post(id: string){
+  post(id: number){
     return instance.post(`follow/${id}`, {})
       .then(response => {
         return response.data

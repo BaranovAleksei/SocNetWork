@@ -1,5 +1,5 @@
 export type AuthPT = {
-  userId: string | null
+  userId: number | null
   email: string | null
   login: string | null
   isAuth: boolean
@@ -14,7 +14,7 @@ const initialState: AuthPT = {
   // isFetching: false
 }
 
-export const setAuthUserData = ( userId: string | null, email: string | null, login: string | null ) => {
+export const setAuthUserData = ( userId: number | null , email: string | null , login: string | null ) => {
   return {
     type: 'SET-USER-DATA',
     data: { userId, email, login }

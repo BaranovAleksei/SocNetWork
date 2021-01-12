@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
 import {
   follow, setUsers, unfollow,
-  setCurrentPage, setTotalUsersCount, UserType, setIsFetching, toggleFollowingProgress
+  setCurrentPage, setTotalUsersCount, UserType, setIsFetching, toggleFollowingProgress, getUsers
 } from "../../redux/userspage-reducer";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader/Preloader";
@@ -15,18 +15,18 @@ type mapStateToPropsType = {
   totalUsersCount: number
   currentPage: number
   isFetching: boolean
-  followingInProgress: Array<string>
+  followingInProgress: Array<number>
 }
 
 type mapDispatchToPropsType = {
-  follow: (userId: string) => void
-  unfollow: (userId: string) => void
+  follow: (userId: number) => void
+  unfollow: (userId: number) => void
   setUsers: (users: any) => void
   setCurrentPage: (currentPage: number) => void
   setTotalUsersCount: (totalCount: number) => void
   setIsFetching: (isFetching: boolean) => void
-  toggleFollowingProgress: (followingInToggle: boolean, id: string) => void
-
+  toggleFollowingProgress: (followingInToggle: boolean, id: number) => void
+  getUsers: ( currentPage: number, pageSize: number ) => void
 }
 
 type UsersContainerPT = mapDispatchToPropsType & mapStateToPropsType
@@ -34,24 +34,34 @@ type UsersContainerPT = mapDispatchToPropsType & mapStateToPropsType
 class UsersContainer extends React.Component<UsersContainerPT> {
 
   componentDidMount() {
-    this.props.setIsFetching(true)
 
-    usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
-      .then( (data: any) => {
-        this.props.setIsFetching(false);
-        this.props.setUsers( data.items );
-        this.props.setTotalUsersCount( data.totalCount);
-      })
+    this.props.getUsers(this.props.currentPage, this.props.pageSize)
+
+    // before thunkCrete
+    // this.props.setIsFetching(true)
+    //
+    // usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
+    //   .then( (data: any) => {
+    //     this.props.setIsFetching(false);
+    //     this.props.setUsers( data.items );
+    //     this.props.setTotalUsersCount( data.totalCount);
+    //   })
   }
-  onPageChanged  = ( pageNumber: number ) => {
-    this.props.setIsFetching(true)
-    this.props.setCurrentPage( pageNumber )
 
-    usersAPI.getUsers(pageNumber, this.props.pageSize)
-      .then( (data: any ) => {
-        this.props.setIsFetching(false )
-        this.props.setUsers( data.items );
-      })
+  onPageChanged  = ( pageNumber: number ) => {
+
+    this.props.setCurrentPage( pageNumber )
+    this.props.getUsers(pageNumber, this.props.pageSize)
+
+    // before thunkCreate
+    // this.props.setIsFetching(true)
+    // this.props.setCurrentPage( pageNumber )
+    //
+    // usersAPI.getUsers(pageNumber, this.props.pageSize)
+    //   .then( (data: any ) => {
+    //     this.props.setIsFetching(false )
+    //     this.props.setUsers( data.items );
+    //   })
   }
 
   render() {
@@ -108,6 +118,7 @@ const mapStateToProps = (state: AllAppTypes ):mapStateToPropsType => {
 
 export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>
               ( mapStateToProps,
-                { follow, unfollow, setCurrentPage, setTotalUsersCount,
-              setIsFetching, setUsers, toggleFollowingProgress } )
+                { follow, unfollow, setCurrentPage,
+                  setTotalUsersCount, setIsFetching, setUsers,
+                  toggleFollowingProgress, getUsers } )
               (UsersContainer);

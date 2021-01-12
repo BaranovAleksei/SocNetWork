@@ -10,12 +10,12 @@ export type UsersPropsType = {
   pageSize: number
   totalUsersCount: number
   currentPage: number
-  follow: (userId: string) => void
-  unfollow: (userId: string) => void
+  follow: (userId: number) => void
+  unfollow: (userId: number) => void
   setCurrentPage: (currentPage: number) => void
   onPageChanged: (page: number) => void
-  followingInProgress: Array<string>
-  toggleFollowingProgress: (followingInProgress: boolean, id: string) => void
+  followingInProgress: Array<number>
+  toggleFollowingProgress: (followingInProgress: boolean, id: number) => void
 }
 
 export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
@@ -43,9 +43,10 @@ export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
          <div>
            { u.followed ?
 
-             <button disabled = { props.followingInProgress.some( id => id === u.id )} onClick={ () => {
+             <button disabled = { props.followingInProgress.some( id => id === u.id )}
+                     onClick={ () => {
                props.toggleFollowingProgress(true, u.id)
-                debugger
+
                // axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
                //   { withCredentials: true,
                //      headers: {
@@ -60,14 +61,17 @@ export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
                //   })
 
                usersAPI.delete( u.id )
+
                  .then( (data: any) => {
-                   if (data.resultCode === 0) {
+
+                   if (data.resultCode === 0 ) {
                      props.unfollow( u.id )
                    }
                    props.toggleFollowingProgress(false, u.id)
                  })
                }}>Unfollow
-             </button> : <button  disabled = { props.followingInProgress.some(id => id === u.id)} onClick={ () => {
+             </button> : <button  disabled = { props.followingInProgress.some(id => id === u.id)}
+                                  onClick={ () => {
                props.toggleFollowingProgress(true, u.id )
 
                // axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {},
