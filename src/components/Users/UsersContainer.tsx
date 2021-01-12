@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
-import {
-  follow, setUsers, unfollow,
+import { follow, unfollow, setUsers,
   setCurrentPage, setTotalUsersCount, UserType, setIsFetching, toggleFollowingProgress, getUsers
 } from "../../redux/userspage-reducer";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader/Preloader";
-import { usersAPI } from "../../api/api";
 
 type mapStateToPropsType = {
   users: Array<UserType>
