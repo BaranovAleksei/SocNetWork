@@ -1,3 +1,7 @@
+import {usersAPI} from "../api/api";
+import {ThunkAction} from "redux-thunk";
+import {AllAppTypes} from "./redux-store";
+
 type ContactType = {
   facebook?: string
   website?: string
@@ -45,40 +49,56 @@ const initialState: ProfilePageType = {
   isFetching: true
 }
 
-export const postOnChange = (textChange: string) => {
+type postOnChangeType = {
+  type: 'CHANGE_NEW_POST'
+  newText: string
+}
+export const postOnChange = (textChange: string): postOnChangeType => {
   return {
-    type: 'CHANGE-NEW-POST',
+    type: 'CHANGE_NEW_POST',
     newText: textChange
   }
-};
-export const addPost = (postText: string) => {
+}
+
+type addPostType = {
+  type: 'ADD_POST'
+  postText: string
+}
+export const addPost = (postText: string): addPostType => {
   return {
-    type: 'ADD-POST',
+    type: 'ADD_POST',
     postText: postText,
   }
-};
-export const setUserProfile = (profileInfo: profileInfoType) => {
+}
+
+type setUserProfileType = {
+  type: 'SET_USER_PROFILE'
+  profileInfo: profileInfoType
+}
+export const setUserProfile = (profileInfo: profileInfoType): setUserProfileType => {
   return {
-    type: 'SET-USER-PROFILE',
+    type: 'SET_USER_PROFILE',
     profileInfo
   }
-};
-export const setIsFetching = ( isFetching: boolean) => {
+}
+
+type setIsFetchingType = {
+  type: 'TOGGLE_IS_FETCHING'
+  isFetching: boolean
+}
+export const setIsFetching = ( isFetching: boolean): setIsFetchingType => {
   return {
-    type: 'TOGGLE-IS-FETCHING',
+    type: 'TOGGLE_IS_FETCHING',
     isFetching
   }
 }
 
-type ActionTypeProfilePage = ReturnType<typeof postOnChange>
-                           & ReturnType<typeof addPost>
-                           & ReturnType<typeof setUserProfile>
-                           & ReturnType<typeof setIsFetching>
+type ActionTypeProfilePage = postOnChangeType | addPostType | setUserProfileType | setIsFetchingType
 
 const profileReducer = (state = initialState, action: ActionTypeProfilePage): ProfilePageType => {
 
   switch (action.type) {
-    case 'ADD-POST':
+    case 'ADD_POST':
       const newPost: PostPropsType = {
         "id": new Date().getTime(),
         "message": action.postText,
@@ -89,14 +109,14 @@ const profileReducer = (state = initialState, action: ActionTypeProfilePage): Pr
         messageForNewPost: '',
         posts: [ newPost,...state.posts]
       }
-    case 'CHANGE-NEW-POST':
+    case 'CHANGE_NEW_POST':
       return {
         ...state,
         messageForNewPost: action.newText
       }
-    case 'SET-USER-PROFILE':
+    case 'SET_USER_PROFILE':
       return {...state, profileInfo: action.profileInfo}
-    case 'TOGGLE-IS-FETCHING':
+    case 'TOGGLE_IS_FETCHING':
       return{
       ...state,
       isFetching: action.isFetching
@@ -105,6 +125,19 @@ const profileReducer = (state = initialState, action: ActionTypeProfilePage): Pr
       return state;
   }
 };
+
+
+type ThunkType = ThunkAction<Promise<void>, AllAppTypes, unknown, ActionTypeProfilePage>
+
+export const getUserProfile = (userId: number): ThunkType => {
+ return async (dispatch) => {
+    usersAPI.getProfile(userId)
+      .then(response => {
+        dispatch(setIsFetching(false))
+        dispatch(setUserProfile(response.data))
+      })
+  }
+}
 
 export default profileReducer;
 

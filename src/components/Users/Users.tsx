@@ -68,8 +68,8 @@ export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
                //     props.toggleFollowingProgress(false, u.id)
                //   })
 
-               }}>Unfollow
-             </button> : <button  disabled = { props.followingInProgress.some(id => id === u.id)}
+               }}>Unfollow</button>
+             : <button  disabled = { props.followingInProgress.some(id => id === u.id)}
                                   onClick={ () => { props.follow(u.id)
 
                // props.toggleFollowingProgress(true, u.id )
@@ -93,8 +93,8 @@ export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
                //     }
                //     props.toggleFollowingProgress(false, u.id)
                //   })
-               }}>Follow
-             </button>
+               }}>Follow</button>
+
            }
          </div>
        </span>

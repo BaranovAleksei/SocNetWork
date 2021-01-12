@@ -1,12 +1,14 @@
 import React, {ChangeEvent} from 'react';
 import { Profile } from "./Profile";
-import { addPost, postOnChange, setUserProfile, setIsFetching,
-         PostPropsType, profileInfoType} from "../../redux/profilepage-reducer";
+import {
+  addPost, postOnChange, setIsFetching,
+  PostPropsType, profileInfoType, getUserProfile
+} from "../../redux/profilepage-reducer";
 import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
-import axios from "axios";
 import {Preloader} from "../common/Preloader/Preloader";
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+// import {usersAPI} from "../../api/api";
 
 type mapStateToPropsType = {
   profileInfo: profileInfoType | null
@@ -17,8 +19,9 @@ type mapStateToPropsType = {
 type mapDispatchToPropsType = {
   postOnChange: ( text: string ) => void
   addPost: (postText: string) => void
-  setUserProfile: (profileInfo: any ) => void
+  // setUserProfile: (profileInfo: any ) => void
   setIsFetching: (isFetching: boolean) => void
+  getUserProfile: (userId: number) => void
 }
 
 type ProfileContainerPT = mapStateToPropsType & mapDispatchToPropsType
@@ -37,11 +40,13 @@ class ProfileContainer extends React.Component<PropsType> {
     if (!userId) {
       userId = 2;
     }
-    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-      .then( (response: any) => {
-        this.props.setIsFetching(false);
-        this.props.setUserProfile(response.data);
-      });
+    this.props.getUserProfile (userId)
+
+    // usersAPI.getProfile(userId)
+    //   .then(response => {
+    //     this.props.setIsFetching(false)
+    //     this.props.setUserProfile(response.data)
+    //   })
   }
 
   postOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -79,4 +84,4 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
 const WithRouterProfileContainer = withRouter(ProfileContainer)
 
 export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps,
-  { addPost, postOnChange, setUserProfile, setIsFetching })(WithRouterProfileContainer);
+  { addPost, postOnChange, getUserProfile, setIsFetching })(WithRouterProfileContainer);

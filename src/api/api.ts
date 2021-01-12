@@ -15,12 +15,6 @@ export const usersAPI = {
         return response.data
       })
   },
-  getLog(){
-    return instance.get(`auth/me`)
-      .then(response => {
-        return response.data
-      })
-  },
   delete(id: number){
     return instance.delete(`follow/${id}`)
       .then(response => {
@@ -29,6 +23,18 @@ export const usersAPI = {
   },
   post(id: number){
     return instance.post(`follow/${id}`, {})
+      .then(response => {
+        return response.data
+      })
+  },
+  getProfile (userId: number) {
+    return instance.get(`profile/${userId}`)
+  }
+}
+
+export const authApi = {
+  me() {
+    return instance.get(`auth/me`)
       .then(response => {
         return response.data
       })

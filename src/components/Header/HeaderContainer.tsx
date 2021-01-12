@@ -1,10 +1,10 @@
 import React from 'react'
 import { Header } from "./Header";
 import { connect } from "react-redux";
-import { setAuthUserData } from "../../redux/auth-reducer";
-import {AllAppTypes} from "../../redux/redux-store";
-import {usersAPI} from "../../api/api";
-import axios from "axios";
+import { getAuthUserData } from "../../redux/auth-reducer";
+import { AllAppTypes } from "../../redux/redux-store";
+// import { authApi } from "../../api/api";
+
 
 type mapStateToPT = {
 	userId: number | null
@@ -13,27 +13,29 @@ type mapStateToPT = {
 	login: string | null
 }
 type mapDispatchToPT= {
-	setAuthUserData: (id: number, email: any, login: any) => void
+	// setAuthUserData: (id: number, email: any, login: any) => void
+	getAuthUserData: () => void
 }
 
 export type AuthContainerType = mapStateToPT & mapDispatchToPT
 
 class HeaderContainer extends React.Component<AuthContainerType> {
-	componentDidMount() {
-		// this.props.toggleIsFetching(false);
 
+	componentDidMount() {
+
+		// this.props.toggleIsFetching(false);
 		// axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
 		// 	withCredentials: true
 		// })
+		this.props.getAuthUserData()
 
-		usersAPI.getLog()
-			.then( (data: any) => {
-
-				if ( data.resultCode === 0) {
-					let { id, login, email  } = data.data
-					this.props.setAuthUserData( id, email, login )
-				}
-			})
+		// authApi.me ()
+		// 	.then( (data: any) => {
+		// 		if ( data.resultCode === 0) {
+		// 			let { id, login, email  } = data.data
+		// 			this.props.setAuthUserData( id, email, login )
+		// 		}
+		// 	})
 	}
 
 	render() {
@@ -51,5 +53,5 @@ const mapStateToProps = ( state: AllAppTypes): mapStateToPT => ({
 })
 
 export default connect<mapStateToPT, mapDispatchToPT, {}, AllAppTypes>(mapStateToProps,
-	{ setAuthUserData })
+	{ getAuthUserData })
 	(HeaderContainer)
