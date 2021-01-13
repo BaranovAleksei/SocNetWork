@@ -7,7 +7,7 @@ import {
 import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
 import {Preloader} from "../common/Preloader/Preloader";
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import {withRouter, RouteComponentProps, Redirect} from 'react-router-dom';
 // import {usersAPI} from "../../api/api";
 
 type mapStateToPropsType = {
@@ -15,6 +15,7 @@ type mapStateToPropsType = {
   posts: Array<PostPropsType>
   messageForNewPost: string
   isFetching: boolean
+  isAuth: boolean
 }
 type mapDispatchToPropsType = {
   postOnChange: ( text: string ) => void
@@ -58,6 +59,7 @@ class ProfileContainer extends React.Component<PropsType> {
   }
 
   render () {
+    if (!this.props.isAuth) return < Redirect to='/login/' />
     return <>
       {this.props.isFetching ? <Preloader/> : null }
       <Profile
@@ -77,7 +79,8 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
     profileInfo: state.ProfilePage.profileInfo,
     posts :  state.ProfilePage.posts,
     messageForNewPost: state.ProfilePage.messageForNewPost,
-    isFetching: state.ProfilePage.isFetching
+    isFetching: state.ProfilePage.isFetching,
+    isAuth: state.Auth.isAuth
   }
 }
 

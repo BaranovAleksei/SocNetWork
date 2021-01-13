@@ -3,6 +3,7 @@ import s from './Dialogs.module.sass';
 import { DialogsType, MessagesType } from './../../redux/state';
 import { DialogItem } from './DialogItem/DialogItem';
 import { Message } from "./Message/Message";
+import { Redirect } from 'react-router-dom';
 
 type DialogsPropsType = {
   dialogs: Array<DialogsType>
@@ -10,6 +11,7 @@ type DialogsPropsType = {
   messageForNewMessage: string
   changeMessage: ( text: string) => void
   addMessage: (string: string ) => void
+  isAuth: boolean
 }
 
 export const Dialogs: React.FC< DialogsPropsType > = (props) => {
@@ -21,6 +23,8 @@ export const Dialogs: React.FC< DialogsPropsType > = (props) => {
   const addMessage = (newMessage: string) => {
     props.addMessage(newMessage);
   };
+
+  if (!props.isAuth) return < Redirect to = {'/login/'} />
 
   return (
     <div className={s.dialogs}>

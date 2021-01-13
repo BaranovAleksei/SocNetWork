@@ -9,7 +9,6 @@ export type AuthPT = {
   email: string | null
   login: string | null
   isAuth: boolean
-  // isFetching: boolean
 }
 
 const initialState: AuthPT = {
@@ -17,7 +16,6 @@ const initialState: AuthPT = {
   email: null,
   login: null,
   isAuth: false
-  // isFetching: false
 }
 type AuthDataPT = {
   userId: number | null
@@ -38,7 +36,6 @@ export const setAuthUserData = ( userId: number | null , email: string | null , 
 type ActionTypeAuth = setAuthUserDataType
 
 const authReducer = (state = initialState, action: ActionTypeAuth): AuthPT => {
-
   switch (action.type) {
     case 'SET_USER_DATA':
       return {
