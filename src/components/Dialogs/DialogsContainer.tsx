@@ -5,6 +5,7 @@ import {changeMessageBody, sendMessage} from "../../redux/dialogspage-reducer";
 import { AllAppTypes } from '../../redux/redux-store';
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import ProfileContainer from "../Profile/ProfileContainer";
+import { compose } from 'redux';
 
 type DialogsType = {
   id: number
@@ -64,7 +65,7 @@ const mapDispatchToProps = ( dispatch: any): mapDispatchToPropsType => {
   }
 }
 
-let AuthRedirectComponent = withAuthRedirect(DialogsContainer)
-
-export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps, mapDispatchToProps)
-              (AuthRedirectComponent);
+export default compose<React.ComponentType> (
+  connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps, mapDispatchToProps),
+  withAuthRedirect
+)(DialogsContainer);

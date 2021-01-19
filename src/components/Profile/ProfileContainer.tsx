@@ -9,6 +9,7 @@ import { AllAppTypes } from "../../redux/redux-store";
 import {Preloader} from "../common/Preloader/Preloader";
 import {withRouter, RouteComponentProps, Redirect} from 'react-router-dom';
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 // import {usersAPI} from "../../api/api";
 
 type mapStateToPropsType = {
@@ -81,9 +82,9 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
   }
 }
 
-let AuthRedirectComponent = withAuthRedirect(ProfileContainer)
-
-const WithRouterProfileContainer = withRouter(AuthRedirectComponent)
-
-export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps,
-  { addPost, postOnChange, getUserProfile, setIsFetching })(WithRouterProfileContainer);
+export default compose<React.ComponentType> (
+  connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps,
+    { addPost, postOnChange, getUserProfile, setIsFetching }),
+  withRouter,
+  withAuthRedirect
+)(ProfileContainer)
