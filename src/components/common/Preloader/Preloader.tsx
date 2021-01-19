@@ -4,6 +4,6 @@ import preloader from '../../../img/preloader.gif'
 
 export const Preloader = ( ) => {
 	return <div className={s.preloader}>
-		<img src={preloader}/>
+		<img src={preloader} alt={'descriptions'}/>
 	</div>
 }

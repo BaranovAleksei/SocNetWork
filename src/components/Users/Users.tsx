@@ -3,7 +3,6 @@ import {UserType} from "../../redux/userspage-reducer"
 import defaultImg from '../../img/defaultImg.png'
 import s from './User.module.sass'
 import { NavLink } from "react-router-dom"
-import {usersAPI} from "../../api/api";
 
 export type UsersPropsType = {
   users: Array<UserType>
@@ -36,7 +35,7 @@ export const Users:React.FC<UsersPropsType> = ( props:UsersPropsType ) => {
       { props.users.map((u: UserType) => <div key={u.id}>
        <span>
          <div>
-           <NavLink to = {'/profile/' + u.id}>
+           <NavLink to = {'/profile/'+ u.id }>
              <img src={ u.photos.small !== null ? u.photos.small : defaultImg } alt=""/>
            </NavLink>
          </div>

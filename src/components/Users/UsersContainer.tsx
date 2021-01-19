@@ -6,6 +6,7 @@ import { follow, unfollow, setUsers,
 } from "../../redux/userspage-reducer";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader/Preloader";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 type mapStateToPropsType = {
   users: Array<UserType>
@@ -91,32 +92,11 @@ const mapStateToProps = (state: AllAppTypes ):mapStateToPropsType => {
   }
 }
 
-// const mapDispatchToProps = ( dispatch: any ): mapDispatchToPropsType => {
-//   return {
-//     follow: (userId: string) => {
-//       dispatch(followAC( userId ))
-//     },
-//     unfollow: (userId: string) => {
-//       dispatch(unfollowAC(userId))
-//     },
-//     setUsers: (users: Array<UserType>) => {
-//       dispatch(setUsersAC(users))
-//     },
-//     setCurrentPage: (currentPage: number) => {
-//       dispatch(setCurrentPageAC(currentPage))
-//     },
-//     setTotalUsersCount: (totalCount: number) => {
-//       dispatch(setTotalUsersCountAC(totalCount))
-//     },
-//     setIsFetching: (isFetching: boolean   ) => {
-//       dispatch(setIsFetchingAC(isFetching))
-//     }
-//   }
-// }
+let AuthRedirectComponent = withAuthRedirect( UsersContainer)
 
 export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>
               ( mapStateToProps,
                 { follow, unfollow, setCurrentPage,
                   setTotalUsersCount, setIsFetching, setUsers,
                   toggleFollowingProgress, getUsers } )
-              (UsersContainer);
+              ( AuthRedirectComponent );

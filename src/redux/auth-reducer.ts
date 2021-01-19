@@ -1,5 +1,3 @@
-import {usersAPI} from "../api/api";
-import {toggleFollowingProgress, unfollowSuccess} from "./userspage-reducer";
 import {ThunkAction} from "redux-thunk";
 import {AllAppTypes} from "./redux-store";
 import { authApi } from '../api/api';

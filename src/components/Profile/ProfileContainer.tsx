@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
 import {Preloader} from "../common/Preloader/Preloader";
 import {withRouter, RouteComponentProps, Redirect} from 'react-router-dom';
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 // import {usersAPI} from "../../api/api";
 
 type mapStateToPropsType = {
@@ -15,7 +16,7 @@ type mapStateToPropsType = {
   posts: Array<PostPropsType>
   messageForNewPost: string
   isFetching: boolean
-  isAuth: boolean
+  // isAuth: boolean
 }
 type mapDispatchToPropsType = {
   postOnChange: ( text: string ) => void
@@ -42,12 +43,6 @@ class ProfileContainer extends React.Component<PropsType> {
       userId = 2;
     }
     this.props.getUserProfile (userId)
-
-    // usersAPI.getProfile(userId)
-    //   .then(response => {
-    //     this.props.setIsFetching(false)
-    //     this.props.setUserProfile(response.data)
-    //   })
   }
 
   postOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +54,9 @@ class ProfileContainer extends React.Component<PropsType> {
   }
 
   render () {
-    if (!this.props.isAuth) return < Redirect to='/login/' />
+
+    // if (!this.props.isAuth) return < Redirect to='/login/' />
+
     return <>
       {this.props.isFetching ? <Preloader/> : null }
       <Profile
@@ -80,11 +77,13 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
     posts :  state.ProfilePage.posts,
     messageForNewPost: state.ProfilePage.messageForNewPost,
     isFetching: state.ProfilePage.isFetching,
-    isAuth: state.Auth.isAuth
+    // isAuth: state.Auth.isAuth
   }
 }
 
-const WithRouterProfileContainer = withRouter(ProfileContainer)
+let AuthRedirectComponent = withAuthRedirect(ProfileContainer)
+
+const WithRouterProfileContainer = withRouter(AuthRedirectComponent)
 
 export default connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps,
   { addPost, postOnChange, getUserProfile, setIsFetching })(WithRouterProfileContainer);

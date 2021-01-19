@@ -1,5 +1,4 @@
-import { ActionType, DialogPageType, MessagesType} from "./state";
-
+import { DialogPageType, MessagesType} from "./state";
 
 export const changeMessageBody = (textNewMessage: string) => {
   return {

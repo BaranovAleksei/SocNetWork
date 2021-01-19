@@ -59,9 +59,11 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
        </div>
        <div className={s.OverlayPosts}>
          { props.posts.map( (el: PostPropsType) => (
-           <Post id={el.id}
-                 message={el.message}
-                 likesCount={el.likesCount}
+           <Post
+                 key = {el.id}
+                 id = {el.id}
+                 message = {el.message}
+                 likesCount = {el.likesCount}
              />
            ))
          }
