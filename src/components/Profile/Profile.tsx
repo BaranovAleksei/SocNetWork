@@ -11,6 +11,8 @@ export type ProfilePropsType = {
   postOnChange: ( e: ChangeEvent<HTMLInputElement> ) => void
   addPost: (postText: string) => void
   isFetching: boolean
+  status: string
+  updateStatus: (status: string) => void
 }
 
 export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) => {
@@ -52,8 +54,8 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
              {props.profileInfo?.contacts.website}</a></li> : null }
          </ul>
        </div>
-       <hr />
-       <ProfileInfo status = {'Hello my friends'} />
+       <ProfileInfo status = {props.status}
+                    updateStatus = {props.updateStatus} />
        <hr />
        <div className={s.newPost}>
          <input value={ props.messageForNewPost }
