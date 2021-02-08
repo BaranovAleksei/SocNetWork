@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { Post } from './Post';
 import s from './Profile.module.sass';
 import {PostPropsType, profileInfoType} from "../../redux/profilepage-reducer";
+import ProfileInfo from "./ProfileInfo";
 
 export type ProfilePropsType = {
   profileInfo: profileInfoType | null
@@ -51,6 +52,9 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
              {props.profileInfo?.contacts.website}</a></li> : null }
          </ul>
        </div>
+       <hr />
+       <ProfileInfo status = {'Hello my friends'} />
+       <hr />
        <div className={s.newPost}>
          <input value={ props.messageForNewPost }
                 onChange={ props.postOnChange }>
@@ -58,7 +62,8 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
          <button onClick={ () => { props.addPost(props.messageForNewPost) }}> add post </button>
        </div>
        <div className={s.OverlayPosts}>
-         { props.posts.map( (el: PostPropsType) => (
+         {
+           props.posts.map( (el: PostPropsType) => (
            <Post
                  key = {el.id}
                  id = {el.id}
@@ -69,6 +74,5 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
          }
        </div>
      </div>
-
   </>
 }
