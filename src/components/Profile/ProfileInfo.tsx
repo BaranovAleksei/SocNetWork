@@ -29,6 +29,13 @@ class ProfileInfo extends React.Component<ProfileInfoType> {
 			status: e.currentTarget.value
 		})
 	}
+	componentDidUpdate(prevProps: Readonly<ProfileInfoType>, prevState: Readonly<{}>, snapshot?: any) {
+		if(prevProps.status !== this.props.status) {
+			this.setState({
+				status: this.props.status
+			})
+		}
+	}
 
 	render() {
 		return (
