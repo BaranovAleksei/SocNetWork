@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import { Profile } from "./Profile";
 import {
-  addPost, postOnChange, setIsFetching, updateStatus,
+  addPost, setIsFetching, updateStatus,
   PostPropsType, profileInfoType, getUserProfile, getStatus
 } from "../../redux/profilepage-reducer";
 import { connect } from "react-redux";
@@ -15,13 +15,13 @@ import {compose} from "redux";
 type mapStateToPropsType = {
   profileInfo: profileInfoType | null
   posts: Array<PostPropsType>
-  messageForNewPost: string
+  // messageForNewPost: string
   isFetching: boolean
   status: string
   // isAuth: boolean
 }
 type mapDispatchToPropsType = {
-  postOnChange: ( text: string ) => void
+  // postOnChange: ( text: string ) => void
   addPost: (postText: string) => void
   // setUserProfile: (profileInfo: any ) => void
   setIsFetching: (isFetching: boolean) => void
@@ -49,12 +49,13 @@ class ProfileContainer extends React.Component<PropsType> {
     this.props.getStatus( userId )
   }
 
-  postOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const text = e.currentTarget.value;
-    this.props.postOnChange( text );
-  }
-  addPost = ( postText: string) => {
-    this.props.addPost( postText );
+  // postOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const text = e.currentTarget.value;
+  //   this.props.postOnChange( text );
+  // }
+
+  addPost = ( newPostText: string) => {
+    this.props.addPost( newPostText );
   }
 
   render () {
@@ -67,8 +68,8 @@ class ProfileContainer extends React.Component<PropsType> {
         isFetching = {this.props.isFetching}
         profileInfo = { this.props.profileInfo}
         posts = { this.props.posts }
-        messageForNewPost={ this.props.messageForNewPost }
-        postOnChange={ this.postOnChange }
+        // messageForNewPost={ this.props.messageForNewPost }
+        // postOnChange={ this.postOnChange }
         addPost={ this.addPost }
         status = { this.props.status }
         updateStatus = { this.props.updateStatus }
@@ -81,7 +82,7 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
   return {
     profileInfo: state.ProfilePage.profileInfo,
     posts :  state.ProfilePage.posts,
-    messageForNewPost: state.ProfilePage.messageForNewPost,
+    // messageForNewPost: state.ProfilePage.messageForNewPost,
     isFetching: state.ProfilePage.isFetching,
     status: state.ProfilePage.status
     // isAuth: state.Auth.isAuth
@@ -90,7 +91,7 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
 
 export default compose<React.ComponentType> (
   connect< mapStateToPropsType, mapDispatchToPropsType, {}, AllAppTypes>(mapStateToProps,
-    { addPost, postOnChange, getUserProfile, getStatus, updateStatus, setIsFetching }),
+    { addPost, getUserProfile, getStatus, updateStatus, setIsFetching }),
   withRouter,
   withAuthRedirect
 )(ProfileContainer)

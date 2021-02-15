@@ -3,6 +3,7 @@ import s from './Dialogs.module.sass';
 import { DialogItem } from './DialogItem/DialogItem';
 import { Message } from "./Message/Message";
 import { Redirect } from 'react-router-dom';
+import {reduxForm, Field } from "redux-form";
 
 type DialogsType = {
   id: number
@@ -16,23 +17,24 @@ type MessagesType = {
 type DialogsPropsType = {
   dialogs: Array<DialogsType>
   messages: Array<MessagesType>
-  messageForNewMessage: string
-  changeMessage: ( text: string) => void
+  // messageForNewMessage: string
+  // changeMessage: ( text: string) => void
   addMessage: (string: string ) => void
-  // isAuth: boolean
 }
 
 export const Dialogs: React.FC< DialogsPropsType > = (props) => {
 
-  const changeMessage = ( e: ChangeEvent<HTMLInputElement> ) => {
-    const text = e.currentTarget.value;
-    props.changeMessage( text );
-  };
-  const addMessage = (newMessage: string) => {
-    props.addMessage(newMessage);
-  };
+  // const changeMessage = ( e: ChangeEvent<HTMLInputElement> ) => {
+  //   const text = e.currentTarget.value;
+  //   props.changeMessage( text );
+  // };
+  // const addMessage = (newMessage: string) => {
+  //   props.addMessage(newMessage);
+  // }
 
-  // if (!props.isAuth) return < Redirect to = {'/login/'} />
+  let addNewMessage = (values: any) => {
+    props.addMessage(values.newMessageBody)
+  }
 
   return (
     <div className={s.dialogs}>
@@ -41,12 +43,19 @@ export const Dialogs: React.FC< DialogsPropsType > = (props) => {
       </div>
       <div className={s.messagesOver}>
         { props.messages.map( (mes: MessagesType ) => ( <Message id = {mes.id}  message={ mes.message}/> ))}
-        <input
-          value = { props.messageForNewMessage }
-          onChange={ changeMessage }
-        />
-        <button onClick = { () => {addMessage(props.messageForNewMessage)} } > add Message </button>
+        <AddMessageFormRedux onSubmit={addNewMessage}/>
       </div>
     </div>
   )
 }
+
+const AddMessageForm = (props:any) => {
+  return  <>
+    <form onSubmit={ props.handleSubmit }>
+      <Field component='textarea' name = 'newMessageBody' placeholder='Enter your message'/>
+      <button>add Message</button>
+    </form>
+  </>
+}
+
+const AddMessageFormRedux = reduxForm({form: 'dialogAddMessageForm'})(AddMessageForm)

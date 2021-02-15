@@ -1,11 +1,19 @@
-import { DialogPageType, MessagesType} from "./state";
+import React from "react"
 
-export const changeMessageBody = (textNewMessage: string) => {
-  return {
-    type: 'CHANGE-NEW-MESSAGE',
-    messageForNewMessage: textNewMessage
-  }as const
+export type DialogsType = {
+  id: number
+  name: string
 };
+export type MessagesType = {
+  id: number
+  message: string
+};
+
+export type DialogPageType = {
+  dialogs: Array<DialogsType>
+  messages: Array<MessagesType>
+}
+
 export const sendMessage = (newMessage: string) => {
   return {
     type: 'SEND-MESSAGE',
@@ -13,7 +21,7 @@ export const sendMessage = (newMessage: string) => {
   }as const
 };
 
-export type DialogsPageActionType = ReturnType<typeof changeMessageBody> & ReturnType<typeof sendMessage>
+export type DialogsPageActionType = ReturnType<typeof sendMessage>
 
 const initialState: DialogPageType = {
   dialogs: [
@@ -30,18 +38,11 @@ const initialState: DialogPageType = {
     {id: 3, message: 'when?'},
     {id: 4, message: 'Whot?'},
     {id: 5, message: 'Ho?'}
-  ],
-  messageForNewMessage: ''
+  ]
 }
 
 const dialogsReducer = (state = initialState , action: DialogsPageActionType): DialogPageType  => {
   switch (action.type) {
-
-    case "CHANGE-NEW-MESSAGE":
-      return {
-        ...state,
-        messageForNewMessage: action.messageForNewMessage
-      }
 
     case "SEND-MESSAGE":
       const newMessage: MessagesType = {
@@ -50,7 +51,6 @@ const dialogsReducer = (state = initialState , action: DialogsPageActionType): D
       }
       return {
         ...state,
-        messageForNewMessage: '',
         messages: [...state.messages, newMessage]
       }
     default:

@@ -33,7 +33,7 @@ export type PostPropsType = {
 export type ProfilePageType = {
   profileInfo: profileInfoType | null
   posts: Array<PostPropsType>
-  messageForNewPost: string
+  // messageForNewPost: string
   isFetching: boolean
   status: string
 }
@@ -46,21 +46,21 @@ const initialState: ProfilePageType = {
     { id: 3, message: 'It\'s my secondary post', likesCount: 124 },
     { id: 4, message: 'It\'s my third post', likesCount: 18 }
   ],
-  messageForNewPost: '',
+  // messageForNewPost: '',
   isFetching: true,
   status: ''
 }
 
-type postOnChangeType = {
-  type: 'CHANGE_NEW_POST'
-  newText: string
-}
-export const postOnChange = (textChange: string): postOnChangeType => {
-  return {
-    type: 'CHANGE_NEW_POST',
-    newText: textChange
-  }
-}
+// type postOnChangeType = {
+//   type: 'CHANGE_NEW_POST'
+//   newText: string
+// }
+// export const postOnChange = (textChange: string): postOnChangeType => {
+//   return {
+//     type: 'CHANGE_NEW_POST',
+//     newText: textChange
+//   }
+// }
 
 type addPostType = {
   type: 'ADD_POST'
@@ -106,7 +106,7 @@ export const setStatus = (status: string): setStatusType => {
   }
 }
 
-type ActionTypeProfilePage = postOnChangeType | addPostType | setUserProfileType
+type ActionTypeProfilePage = addPostType | setUserProfileType
   | setIsFetchingType | setStatusType
 
 const profileReducer = (state = initialState, action: ActionTypeProfilePage): ProfilePageType => {
@@ -120,14 +120,14 @@ const profileReducer = (state = initialState, action: ActionTypeProfilePage): Pr
       }
       return {
         ...state,
-        messageForNewPost: '',
+        // messageForNewPost: '',
         posts: [ newPost,...state.posts]
       }
-    case 'CHANGE_NEW_POST':
-      return {
-        ...state,
-        messageForNewPost: action.newText
-      }
+    // case 'CHANGE_NEW_POST':
+    //   return {
+    //     ...state,
+    //     messageForNewPost: action.newText
+    //   }
     case 'SET_USER_PROFILE':
       return {...state, profileInfo: action.profileInfo}
     case 'TOGGLE_IS_FETCHING':

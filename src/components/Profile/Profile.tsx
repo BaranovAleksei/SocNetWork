@@ -3,12 +3,13 @@ import { Post } from './Post';
 import s from './Profile.module.sass';
 import {PostPropsType, profileInfoType} from "../../redux/profilepage-reducer";
 import ProfileInfo from "./ProfileInfo";
+import {Field, reduxForm} from "redux-form";
 
 export type ProfilePropsType = {
   profileInfo: profileInfoType | null
   posts: Array<PostPropsType>
-  messageForNewPost: string
-  postOnChange: ( e: ChangeEvent<HTMLInputElement> ) => void
+  // messageForNewPost: string
+  // postOnChange: (e: ChangeEvent<HTMLInputElement>) => void
   addPost: (postText: string) => void
   isFetching: boolean
   status: string
@@ -16,6 +17,23 @@ export type ProfilePropsType = {
 }
 
 export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) => {
+
+  let onAddPost = (values: any) => {
+    props.addPost(values.newPostText)
+  }
+
+  function AddNewPostForm (props: any) {
+    return (
+      <form onSubmit={props.handleSubmit}>
+        <Field placeholder='my new post' name ='newPostText' component='textarea' />
+        <button onSubmit={onAddPost}> add post </button>
+      </form>
+    )
+  }
+
+  // @ts-ignore
+  AddNewPostForm = reduxForm({form: 'ProfileAddNewPostForm'})(AddNewPostForm)
+
 
   return <>
      <div className = {s.profile}>
@@ -58,10 +76,7 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
                     updateStatus = {props.updateStatus} />
        <hr />
        <div className={s.newPost}>
-         <input value={ props.messageForNewPost }
-                onChange={ props.postOnChange }>
-         </input>
-         <button onClick={ () => { props.addPost(props.messageForNewPost) }}> add post </button>
+         <AddNewPostForm onSubmit={onAddPost}/>
        </div>
        <div className={s.OverlayPosts}>
          {
