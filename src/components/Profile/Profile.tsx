@@ -4,6 +4,8 @@ import s from './Profile.module.sass';
 import {PostPropsType, profileInfoType} from "../../redux/profilepage-reducer";
 import ProfileInfo from "./ProfileInfo";
 import {Field, reduxForm} from "redux-form";
+import {maxLengthCreator, required} from "../../Utils/Validators/validators";
+import {Textarea} from "../common/FormsControls/FormsControls";
 
 export type ProfilePropsType = {
   profileInfo: profileInfoType | null
@@ -16,6 +18,8 @@ export type ProfilePropsType = {
   updateStatus: (status: string) => void
 }
 
+const maxLength30 = maxLengthCreator(30)
+
 export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) => {
 
   let onAddPost = (values: any) => {
@@ -25,7 +29,11 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
   function AddNewPostForm (props: any) {
     return (
       <form onSubmit={props.handleSubmit}>
-        <Field placeholder='my new post' name ='newPostText' component='textarea' />
+        <Field placeholder='my new post'
+               name ='newPostText'
+               component = {Textarea}
+               validate={[required, maxLength30]}
+        />
         <button onSubmit={onAddPost}> add post </button>
       </form>
     )
@@ -33,7 +41,6 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
 
   // @ts-ignore
   AddNewPostForm = reduxForm({form: 'ProfileAddNewPostForm'})(AddNewPostForm)
-
 
   return <>
      <div className = {s.profile}>
@@ -86,7 +93,7 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
                  id = {el.id}
                  message = {el.message}
                  likesCount = {el.likesCount}
-             />
+           />
            ))
          }
        </div>
