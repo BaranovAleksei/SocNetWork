@@ -1,6 +1,7 @@
-import {ThunkAction} from "redux-thunk";
-import {AllAppTypes} from "./redux-store";
-import { authApi } from '../api/api';
+import {ThunkAction} from "redux-thunk"
+import {AllAppTypes} from "./redux-store"
+import { authApi } from '../api/api'
+import {stopSubmit} from "redux-form"
 
 export type AuthPT = {
   userId: number | null
@@ -47,8 +48,9 @@ export const setAuthUserData = ( userId: number | null , email: string | null , 
     payload: { userId, email, login, isAuth }
   }
 }
-export const getAuthUserData = (): ThunkType => {
-  return async (dispatch) => {
+// @ts-ignore
+export const getAuthUserData = (): ThunkType => (
+  dispatch) => {
     authApi.me ()
     	.then( (data: any) => {
     		if ( data.resultCode === 0) {
@@ -56,27 +58,30 @@ export const getAuthUserData = (): ThunkType => {
     			dispatch (setAuthUserData( id, email, login, true ))
     		}
     	})
-  }
 }
-export const login = ( email: string, password: string, rememberMe: boolean): ThunkType => {
-  return async (dispatch) => {
+
+// @ts-ignore
+export const login = ( email: string, password: string, rememberMe: boolean):ThunkType => (
+  dispatch) => {
     authApi.login (email, password, rememberMe)
-      .then( (data: any) => {
-        if ( data.resultCode === 0) {
+      .then( response => {
+        if ( response.data.resultCode === 0) {
           dispatch(getAuthUserData())
+        } else {
+          let mes = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
+          // @ts-ignore
+          dispatch(stopSubmit('login', {_error: mes}))
         }
       })
-  }
 }
-export const logout = (): ThunkType => {
-  return async (dispatch) => {
+//@ts-ignore
+export const logout = ():ThunkType => (dispatch) => {
     authApi.logout()
       .then( (data: any) => {
         if ( data.resultCode === 0) {
           dispatch(setAuthUserData(null, null, null, false))
         }
       })
-  }
 }
 
 export default authReducer

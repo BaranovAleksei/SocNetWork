@@ -29,6 +29,9 @@ const LoginForm: React.FC<any> = (props) => {
 				       type="checkbox"/>
 				remember me
 			</div>
+			{ props.error && <div className={s.formSummaryError}>
+					{props.error}
+				</div>}
 			<div>
 				<button>login</button>
 			</div>

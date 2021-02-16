@@ -1,10 +1,8 @@
 import React from 'react'
-import { Header } from "./Header";
-import { connect } from "react-redux";
-import {getAuthUserData, logout} from "../../redux/auth-reducer";
-import { AllAppTypes } from "../../redux/redux-store";
-// import { authApi } from "../../api/api";
-
+import { Header } from "./Header"
+import { connect } from "react-redux"
+import {getAuthUserData, logout} from "../../redux/auth-reducer"
+import { AllAppTypes } from "../../redux/redux-store"
 
 type mapStateToPT = {
 	userId: number | null
