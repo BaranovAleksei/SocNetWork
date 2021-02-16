@@ -1,7 +1,7 @@
 import React from 'react'
 import { Header } from "./Header";
 import { connect } from "react-redux";
-import { getAuthUserData } from "../../redux/auth-reducer";
+import {getAuthUserData, logout} from "../../redux/auth-reducer";
 import { AllAppTypes } from "../../redux/redux-store";
 // import { authApi } from "../../api/api";
 
@@ -15,6 +15,7 @@ type mapStateToPT = {
 type mapDispatchToPT= {
 	// setAuthUserData: (id: number, email: any, login: any) => void
 	getAuthUserData: () => void
+	logout: () => void
 }
 
 export type AuthContainerType = mapStateToPT & mapDispatchToPT
@@ -53,5 +54,5 @@ const mapStateToProps = ( state: AllAppTypes): mapStateToPT => ({
 })
 
 export default connect<mapStateToPT, mapDispatchToPT, {}, AllAppTypes>(mapStateToProps,
-	{ getAuthUserData })
+	{ getAuthUserData, logout })
 	(HeaderContainer)
