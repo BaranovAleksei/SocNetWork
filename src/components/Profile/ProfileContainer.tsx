@@ -41,15 +41,13 @@ class ProfileContainer extends React.Component<PropsType> {
     let userId = this.props.match.params.userId
     if (!userId) {
       userId = this.props.authorizedUserId
+      if (!userId) {
+        this.props.history.push('/login')
+      }
     }
     this.props.getUserProfile (userId)
     this.props.getStatus( userId )
   }
-
-  // postOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const text = e.currentTarget.value;
-  //   this.props.postOnChange( text );
-  // }
 
   addPost = ( newPostText: string) => {
     this.props.addPost( newPostText );
@@ -62,8 +60,6 @@ class ProfileContainer extends React.Component<PropsType> {
         isFetching = {this.props.isFetching}
         profileInfo = { this.props.profileInfo}
         posts = { this.props.posts }
-        // messageForNewPost={ this.props.messageForNewPost }
-        // postOnChange={ this.postOnChange }
         addPost={ this.addPost }
         status = { this.props.status }
         updateStatus = { this.props.updateStatus }
@@ -76,7 +72,6 @@ const mapStateToProps = ( state: AllAppTypes ): mapStateToPropsType => {
   return {
     profileInfo: state.ProfilePage.profileInfo,
     posts :  state.ProfilePage.posts,
-    // messageForNewPost: state.ProfilePage.messageForNewPost,
     isFetching: state.ProfilePage.isFetching,
     status: state.ProfilePage.status,
     authorizedUserId: state.Auth.userId,

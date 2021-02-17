@@ -8,7 +8,8 @@ import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 
 // const renderTree = () => {
-  ReactDOM.render(
+  // @ts-ignore
+ReactDOM.render(
     <BrowserRouter>
       <Provider store={store}>
         <App />

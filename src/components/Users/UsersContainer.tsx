@@ -99,5 +99,5 @@ export default compose<React.ComponentType> (
     { follow, unfollow, setCurrentPage,
       setTotalUsersCount, setIsFetching, setUsers,
       toggleFollowingProgress, getUsers } ),
-  withAuthRedirect
+  // withAuthRedirect
 )(UsersContainer)
