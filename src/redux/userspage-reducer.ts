@@ -164,7 +164,7 @@ const usersReducer = (state = initialState, action: ActionType): UsersPageTP => 
 
 type ThunkType = ThunkAction<Promise<void>, AllAppTypes, unknown, ActionType>
 
-export const getUsers = (currentPage: number, pageSize: number): ThunkType => {
+export const requestUsers = (currentPage: number, pageSize: number): ThunkType => {
     return async (dispatch, getState ) => {
     dispatch(setIsFetching(true))
     let data = await usersAPI.getUsers(currentPage, pageSize)
