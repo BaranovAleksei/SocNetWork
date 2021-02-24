@@ -2,10 +2,10 @@ import React, { ChangeEvent } from 'react';
 import { Post } from './Post';
 import s from './Profile.module.sass';
 import {PostPropsType, profileInfoType} from "../../redux/profilepage-reducer";
-import ProfileInfo from "./ProfileInfo";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../Utils/Validators/validators";
 import {Textarea} from "../common/FormsControls/FormsControls";
+import ProfileInfoHooks from "./ProfileInfoHooks";
 
 export type ProfilePropsType = {
   profileInfo: profileInfoType | null
@@ -79,7 +79,7 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
              {props.profileInfo?.contacts.website}</a></li> : null }
          </ul>
        </div>
-       <ProfileInfo status = {props.status}
+       <ProfileInfoHooks status = {props.status}
                     updateStatus = {props.updateStatus} />
        <hr />
        <div className={s.newPost}>
