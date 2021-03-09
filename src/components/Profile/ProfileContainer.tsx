@@ -48,10 +48,13 @@ class ProfileContainer extends React.Component<PropsType> {
     this.props.getUserProfile (userId)
     this.props.getStatus( userId )
   }
-
   addPost = ( newPostText: string) => {
     this.props.addPost( newPostText );
   }
+  // old version
+  // shouldComponentUpdate(nextProps: Readonly<PropsType>, nextState: Readonly<{}>, nextContext: any): boolean {
+  //   return nextProps != this.props || nextState != this.state
+  // }
 
   render () {
     return <>

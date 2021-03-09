@@ -20,7 +20,7 @@ export type ProfilePropsType = {
 
 const maxLength30 = maxLengthCreator(30)
 
-export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) => {
+export const Profile: React.FC<ProfilePropsType> = React.memo (( props: ProfilePropsType) => {
 
   let onAddPost = (values: any) => {
     props.addPost(values.newPostText)
@@ -99,4 +99,4 @@ export const Profile: React.FC<ProfilePropsType> = ( props: ProfilePropsType) =>
        </div>
      </div>
   </>
-}
+})
