@@ -46,21 +46,9 @@ const initialState: ProfilePageType = {
     { id: 3, message: 'It\'s my secondary post', likesCount: 124 },
     { id: 4, message: 'It\'s my third post', likesCount: 18 }
   ],
-  // messageForNewPost: '',
   isFetching: true,
   status: ''
 }
-
-// type postOnChangeType = {
-//   type: 'CHANGE_NEW_POST'
-//   newText: string
-// }
-// export const postOnChange = (textChange: string): postOnChangeType => {
-//   return {
-//     type: 'CHANGE_NEW_POST',
-//     newText: textChange
-//   }
-// }
 
 type addPostType = {
   type: 'ADD_POST'
@@ -149,31 +137,26 @@ const profileReducer = (state = initialState, action: ActionTypeProfilePage): Pr
 type ThunkType = ThunkAction<Promise<void>, AllAppTypes, unknown, ActionTypeProfilePage>
 
 export const getUserProfile = (userId: number): ThunkType => {
- return async (dispatch) => {
-    usersAPI.getProfile(userId)
-      .then(response => {
-        dispatch(setIsFetching(false))
-        dispatch(setUserProfile(response.data))
-      })
+  return async (dispatch) => {
+    let res = await usersAPI.getProfile(userId)
+    dispatch(setIsFetching(false))
+    dispatch(setUserProfile(res.data))
   }
 }
 
 export const getStatus = (userId: number): ThunkType => {
   return async (dispatch) => {
-    profileAPI.getStatus(userId)
-      .then(res => {
-        dispatch(setStatus(res.data))
-      })
+    let res = await profileAPI.getStatus(userId)
+    dispatch(setStatus(res.data))
   }
 }
+
 export const updateStatus = (status: string): ThunkType => {
   return async (dispatch) => {
-    profileAPI.updateStatus(status)
-      .then(res => {
-        if(res.data.resultCode === 0){
-          dispatch(setStatus(status))
-        }
-      })
+    let res = await profileAPI.updateStatus(status)
+    if(res.data.resultCode === 0){
+      dispatch(setStatus(status))
+    }
   }
 }
 

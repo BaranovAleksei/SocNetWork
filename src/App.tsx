@@ -21,16 +21,21 @@ class App extends Component<any, any> {
 	}
 
 	render () {
+
 		if(!this.props.initialized) { return <Preloader/> }
 
 		return (
 			<div className="App">
-			<HeaderContainer />
-			<Navbar />
-			<Route path='/profile/:userId?' render = { () => <ProfileContainer />}/>
-			<Route path='/dialogs' render = { () => <DialogsContainer />}/>
-			<Route path='/users' render = { () => <UsersContainer />}/>
-			<Route path='/login' render = { () => <Login /> } />
+        <HeaderContainer />
+        <Navbar />
+        <Route path='/profile/:userId?'
+               render = { () => <ProfileContainer />}/>
+        <Route path='/dialogs'
+               render = { () => <DialogsContainer />}/>
+        <Route path='/users'
+               render = { () => <UsersContainer />}/>
+        <Route path='/login'
+               render = { () => <Login /> } />
 			</div>
 			)
 	}
@@ -39,11 +44,10 @@ type mapStateToPropsType = {
 	initialized: boolean
 }
 
-const mapStateToProps = (state: AllAppTypes): mapStateToPropsType => {
-	return {
+const mapStateToProps = (state: AllAppTypes): mapStateToPropsType => ({
 		initialized: state.App.initialized
-	}
-}
+})
 
 export default compose<React.ComponentType>(
-	withRouter, connect(mapStateToProps , {initializeApp}))(App);
+	withRouter,
+  connect(mapStateToProps , {initializeApp}))(App);

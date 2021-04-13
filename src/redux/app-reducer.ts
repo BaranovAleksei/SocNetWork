@@ -1,8 +1,6 @@
 import {ThunkAction} from "redux-thunk"
 import {AllAppTypes} from "./redux-store"
-import {getAuthUserData} from "./auth-reducer";
-// import { authApi } from '../api/api'
-// import {stopSubmit} from "redux-form"
+import {getAuthUserData} from "./auth-reducer"
 
 export type appRedType = {
   initialized: boolean
@@ -40,7 +38,6 @@ type ThunkType =  ThunkAction<Promise<void>, AllAppTypes, unknown, ActionTypeApp
 export const initializeApp = (): ThunkType => (
   dispatch) => {
     let promise = dispatch(getAuthUserData())
-
     Promise.all([promise])
         .then( () => {
             // @ts-ignore
@@ -48,6 +45,5 @@ export const initializeApp = (): ThunkType => (
         })
 
 }
-
 
 export default appReducer

@@ -8,35 +8,23 @@ import {login} from "../../redux/auth-reducer"
 import {Redirect} from "react-router-dom"
 import {AllAppTypes} from "../../redux/redux-store";
 
-const LoginForm: React.FC<any> = (props) => {
-	return <>
-		<form onSubmit = {props.handleSubmit}>
-			<div>
-				<Field placeholder={'Login'}
-				       name ={'email'}
-				       validate = {[required]}
-				       component={ Input } />
-			</div>
-			<div>
-				<Field placeholder={'Password'}
-				       name={'password'}
-				       validate = {[required]}
-				       component={ Input } />
-			</div>
-			<div>
-				<Field component={'input'}
-				       name = {'rememberMe'}
-				       type="checkbox"/>
-				remember me
-			</div>
-			{ props.error && <div className={s.formSummaryError}>
-					{props.error}
-				</div>}
-			<div>
-				<button>login</button>
-			</div>
-		</form>
-		</>
+const LoginForm: React.FC<any> = ({handleSubmit, error}) => {
+	return (
+      <form onSubmit = {handleSubmit}>
+        {createField('Email', 'email', [required], Input )}
+        {createField('Password', 'password', [required], Input,
+          {type: 'password'})}
+        {createField(null, 'rememberMe', [], Input,
+          {type: 'checkbox'}, 'remember me')}
+
+        {error && <div className={s.formSummaryError}>
+          { error }
+        </div>}
+        <div>
+          <button>login</button>
+        </div>
+      </form>
+    )
 }
 
 const LoginReduxForm = reduxForm({form: 'login'})(LoginForm)

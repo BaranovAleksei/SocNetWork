@@ -88,17 +88,6 @@ class UsersContainer extends React.Component<UsersContainerPT> {
   }
 }
 
-// const mapStateToProps = (state: AllAppTypes ):mapStateToPropsType => {
-//   return {
-//     users: state.UsersPage.users,
-//     pageSize: state.UsersPage.pageSize,
-//     totalUsersCount: state.UsersPage.totalUserCount,
-//     currentPage: state.UsersPage.currentPage,
-//     isFetching: state.UsersPage.isFetching,
-//     followingInProgress: state.UsersPage.followingInProgress
-//   }
-// }
-
 const mapStateToProps = (state: AllAppTypes ):mapStateToPropsType => {
   return {
     users: getUserSuper(state),

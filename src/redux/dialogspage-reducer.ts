@@ -1,5 +1,3 @@
-import React from "react"
-
 export type DialogsType = {
   id: number
   name: string
