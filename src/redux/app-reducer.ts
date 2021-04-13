@@ -43,7 +43,6 @@ export const initializeApp = (): ThunkType => (
             // @ts-ignore
             dispatch(initializedSuccess())
         })
-
 }
 
 export default appReducer

@@ -22,7 +22,9 @@ class App extends Component<any, any> {
 
 	render () {
 
-		if(!this.props.initialized) { return <Preloader/> }
+		if(!this.props.initialized) {
+		  return <Preloader/>
+		}
 
 		return (
 			<div className="App">
