@@ -1,24 +1,32 @@
 {
   "files": {
-    "main.css": "/SocNetWork/static/css/main.1248789e.chunk.css",
-    "main.js": "/SocNetWork/static/js/main.1828fd51.chunk.js",
-    "main.js.map": "/SocNetWork/static/js/main.1828fd51.chunk.js.map",
-    "runtime-main.js": "/SocNetWork/static/js/runtime-main.ff5e4831.js",
-    "runtime-main.js.map": "/SocNetWork/static/js/runtime-main.ff5e4831.js.map",
-    "static/js/2.dc81ca1a.chunk.js": "/SocNetWork/static/js/2.dc81ca1a.chunk.js",
-    "static/js/2.dc81ca1a.chunk.js.map": "/SocNetWork/static/js/2.dc81ca1a.chunk.js.map",
+    "main.css": "/SocNetWork/static/css/main.ef59bd29.chunk.css",
+    "main.js": "/SocNetWork/static/js/main.39de7005.chunk.js",
+    "main.js.map": "/SocNetWork/static/js/main.39de7005.chunk.js.map",
+    "runtime-main.js": "/SocNetWork/static/js/runtime-main.bc999577.js",
+    "runtime-main.js.map": "/SocNetWork/static/js/runtime-main.bc999577.js.map",
+    "static/js/2.467ae231.chunk.js": "/SocNetWork/static/js/2.467ae231.chunk.js",
+    "static/js/2.467ae231.chunk.js.map": "/SocNetWork/static/js/2.467ae231.chunk.js.map",
+    "static/css/3.9278076f.chunk.css": "/SocNetWork/static/css/3.9278076f.chunk.css",
+    "static/js/3.b8bbf3c9.chunk.js": "/SocNetWork/static/js/3.b8bbf3c9.chunk.js",
+    "static/js/3.b8bbf3c9.chunk.js.map": "/SocNetWork/static/js/3.b8bbf3c9.chunk.js.map",
+    "static/css/4.c49c49ce.chunk.css": "/SocNetWork/static/css/4.c49c49ce.chunk.css",
+    "static/js/4.40f78e92.chunk.js": "/SocNetWork/static/js/4.40f78e92.chunk.js",
+    "static/js/4.40f78e92.chunk.js.map": "/SocNetWork/static/js/4.40f78e92.chunk.js.map",
     "index.html": "/SocNetWork/index.html",
-    "precache-manifest.ad715761b70ab2a9fcbec12f1cf8f579.js": "/SocNetWork/precache-manifest.ad715761b70ab2a9fcbec12f1cf8f579.js",
+    "precache-manifest.079e45fb6051e68edd001fd8f34299bc.js": "/SocNetWork/precache-manifest.079e45fb6051e68edd001fd8f34299bc.js",
     "service-worker.js": "/SocNetWork/service-worker.js",
-    "static/css/main.1248789e.chunk.css.map": "/SocNetWork/static/css/main.1248789e.chunk.css.map",
-    "static/js/2.dc81ca1a.chunk.js.LICENSE.txt": "/SocNetWork/static/js/2.dc81ca1a.chunk.js.LICENSE.txt",
+    "static/css/3.9278076f.chunk.css.map": "/SocNetWork/static/css/3.9278076f.chunk.css.map",
+    "static/css/4.c49c49ce.chunk.css.map": "/SocNetWork/static/css/4.c49c49ce.chunk.css.map",
+    "static/css/main.ef59bd29.chunk.css.map": "/SocNetWork/static/css/main.ef59bd29.chunk.css.map",
+    "static/js/2.467ae231.chunk.js.LICENSE.txt": "/SocNetWork/static/js/2.467ae231.chunk.js.LICENSE.txt",
     "static/media/krasty.png": "/SocNetWork/static/media/krasty.c09ecfea.png",
     "static/media/preloader.gif": "/SocNetWork/static/media/preloader.90c60c15.gif"
   },
   "entrypoints": [
-    "static/js/runtime-main.ff5e4831.js",
-    "static/js/2.dc81ca1a.chunk.js",
-    "static/css/main.1248789e.chunk.css",
-    "static/js/main.1828fd51.chunk.js"
+    "static/js/runtime-main.bc999577.js",
+    "static/js/2.467ae231.chunk.js",
+    "static/css/main.ef59bd29.chunk.css",
+    "static/js/main.39de7005.chunk.js"
   ]
 }
