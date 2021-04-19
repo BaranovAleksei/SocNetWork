@@ -1,6 +1,6 @@
 import React from "react"
 import {follow, UserType} from "../../redux/userspage-reducer"
-import {Paginator} from "../common/Paginator/Paginator";
+import Paginator from "../common/Paginator/Paginator";
 import {User} from "./User";
 
 export type UsersPropsType = {
@@ -20,11 +20,6 @@ export const Users:React.FC<UsersPropsType> = ({users, currentPage, onPageChange
                                                  pageSize, ...props}:UsersPropsType ) => {
     return (
         <div>
-          <Paginator currentPage = {currentPage}
-                     onPageChanged = {onPageChanged}
-                     pageSize = {pageSize}
-                     totalUserCount = {totalUsersCount}
-          />
           <div>
             { users.map( (u: UserType) => <User user = {u}
                                                 followingInProgress = {props.followingInProgress}
@@ -32,6 +27,11 @@ export const Users:React.FC<UsersPropsType> = ({users, currentPage, onPageChange
                                                 unfollow = {props.unfollow}
                                                 key={u.id}/>)}
           </div>
+          <Paginator currentPage = {currentPage}
+                     onPageChanged = {onPageChanged}
+                     pageSize = {pageSize}
+                     totalItemsCount = {totalUsersCount}
+          />
         </div>
       )
 }
