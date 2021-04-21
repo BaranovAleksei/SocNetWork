@@ -5,7 +5,8 @@ import {PostPropsType, profileInfoType} from "../../redux/profilepage-reducer";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from "../../Utils/Validators/validators";
 import {Textarea} from "../common/FormsControls/FormsControls";
-import ProfileInfoHooks from "./ProfileInfoHooks";
+import ProfileInfoHooks from "./ProfileInfoHooks"
+import userPhotoDef from '../../img/userPhotoDef.png'
 
 export type ProfilePropsType = {
   profileInfo: profileInfoType | null
@@ -16,6 +17,8 @@ export type ProfilePropsType = {
   isFetching: boolean
   status: string
   updateStatus: (status: string) => void
+  isOwner: boolean
+  savePhoto: (file: File) => void
 }
 
 const maxLength30 = maxLengthCreator(30)
@@ -39,12 +42,19 @@ export const Profile: React.FC<ProfilePropsType> = React.memo (( props: ProfileP
     )
   }
 
+  const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
+    if( e.target.files && e.target.files.length) {
+      props.savePhoto(e.target.files[0])
+    }
+  }
+
   // @ts-ignore
   AddNewPostForm = reduxForm({form: 'ProfileAddNewPostForm'})(AddNewPostForm)
 
   return <>
      <div className = {s.profile}>
-       <img className = {s.imgProfile} src = {props.profileInfo?.photos.large} alt=""/>
+       <img className = {s.imgProfile} src = {props.profileInfo?.photos.large || userPhotoDef} alt=""/>
+       {props.isOwner && <input type={'file'} onChange={onMainPhotoSelected}/>}
        <div className={s.description}>
          <span>{props.profileInfo?.aboutMe}</span>
        </div>

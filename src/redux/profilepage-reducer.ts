@@ -93,9 +93,19 @@ export const setStatus = (status: string): setStatusType => {
     status
   }
 }
+type savePhotoSaccessType = {
+  type: 'SAVE_PHOTO',
+  photos: any
+}
+export const savePhotoSuccess = (photos: any): savePhotoSaccessType => {
+  return {
+    type: "SAVE_PHOTO",
+    photos
+  }
+}
 
 type ActionTypeProfilePage = addPostType | setUserProfileType
-  | setIsFetchingType | setStatusType
+  | setIsFetchingType | setStatusType | savePhotoSaccessType
 
 const profileReducer = (state = initialState, action: ActionTypeProfilePage): ProfilePageType => {
 
@@ -108,14 +118,8 @@ const profileReducer = (state = initialState, action: ActionTypeProfilePage): Pr
       }
       return {
         ...state,
-        // messageForNewPost: '',
         posts: [ newPost,...state.posts]
       }
-    // case 'CHANGE_NEW_POST':
-    //   return {
-    //     ...state,
-    //     messageForNewPost: action.newText
-    //   }
     case 'SET_USER_PROFILE':
       return {...state, profileInfo: action.profileInfo}
     case 'TOGGLE_IS_FETCHING':
@@ -127,6 +131,10 @@ const profileReducer = (state = initialState, action: ActionTypeProfilePage): Pr
       return {
         ...state,
         status: action.status
+      }
+    case 'SAVE_PHOTO':
+      // @ts-ignore
+      return {...state, profileInfo: { ...state.profileInfo, photos: action.photos} as ProfilePageType
       }
     default:
       return state;
@@ -156,6 +164,14 @@ export const updateStatus = (status: string): ThunkType => {
     let response = await profileAPI.updateStatus(status)
     if(response.data.resultCode === 0){
       dispatch(setStatus(status))
+    }
+  }
+}
+export const savePhoto = (file: any): ThunkType => {
+  return async (dispatch) => {
+    let response = await profileAPI.savePhoto(file)
+    if(response.data.resultCode === 0){
+      dispatch(savePhotoSuccess(response.data.data.photos))
     }
   }
 }
