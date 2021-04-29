@@ -1,6 +1,6 @@
 import React from "react";
 import s from './Login.module.sass'
-import {Field, reduxForm} from "redux-form"
+import {reduxForm} from "redux-form"
 import {connect} from "react-redux"
 import {Input, createField} from '../common/FormsControls/FormsControls'
 import {required} from "../../utils/validators/validators"
@@ -8,7 +8,17 @@ import {login} from "../../redux/auth-reducer"
 import {Redirect} from "react-router-dom"
 import {AllAppTypes} from "../../redux/redux-store";
 
-const LoginForm: React.FC<any> = ({handleSubmit, error}) => {
+type LoginFormOwnProps = {
+  captchaUrl: string | null
+}
+export type LoginFormValuesType = {
+  captcha: string
+  rememberMe: boolean
+  password: string
+  email: string
+}
+
+const LoginForm: React.FC<any> = ({handleSubmit, error, captchaUrl}) => {
 	return (
       <form onSubmit = {handleSubmit}>
         {createField('Email', 'email', [required], Input )}
@@ -16,6 +26,9 @@ const LoginForm: React.FC<any> = ({handleSubmit, error}) => {
           {type: 'password'})}
         {createField(null, 'rememberMe', [], Input,
           {type: 'checkbox'}, 'remember me')}
+
+        {captchaUrl && <img src={captchaUrl} />}
+        {captchaUrl && createField('Symbols from image', 'captcha', [required], Input, {})}
 
         {error && <div className={s.formSummaryError}>
           { error }
@@ -27,7 +40,7 @@ const LoginForm: React.FC<any> = ({handleSubmit, error}) => {
     )
 }
 
-const LoginReduxForm = reduxForm({form: 'login'})(LoginForm)
+const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnProps>({form: 'login'})(LoginForm)
 
 
 const Login: React.FC<any> = ( props) => {
@@ -43,15 +56,17 @@ const Login: React.FC<any> = ( props) => {
 
 	return <div className={s.loginOverlay}>
 		<h2>Login</h2>
-		<LoginReduxForm onSubmit = { onSubmit } />
+		<LoginReduxForm onSubmit = { onSubmit } captchaUrl = {props.captchaUrl}/>
 	</div>
 }
 
 type mapStateToPropsType = {
 	isAuth: boolean
+  captchaUrl: null | string | undefined
 }
 const mapStateToProps = (state: AllAppTypes): mapStateToPropsType => ({
-	isAuth: state.Auth.isAuth
+	isAuth: state.Auth.isAuth,
+  captchaUrl: state.Auth.captchaUrl
 })
 
 export default connect(mapStateToProps, {login})(Login)
