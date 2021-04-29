@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
 import { follow, unfollow, setUsers,
   setCurrentPage, setTotalUsersCount, UserType, setIsFetching, toggleFollowingProgress, requestUsers
-} from "../../redux/userspage-reducer";
+} from "../../redux/users-reducer";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";

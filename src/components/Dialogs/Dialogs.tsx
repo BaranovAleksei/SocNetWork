@@ -5,7 +5,7 @@ import { Message } from "./Message/Message";
 import { Redirect } from 'react-router-dom';
 import {reduxForm, Field } from "redux-form";
 import {Textarea} from "../common/FormsControls/FormsControls";
-import {maxLengthCreator, required} from "../../Utils/Validators/validators";
+import {maxLengthCreator, required} from "../../utils/validators/validators";
 
 type DialogsType = {
   id: number

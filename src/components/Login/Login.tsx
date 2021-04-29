@@ -3,7 +3,7 @@ import s from './Login.module.sass'
 import {Field, reduxForm} from "redux-form"
 import {connect} from "react-redux"
 import {Input, createField} from '../common/FormsControls/FormsControls'
-import {required} from "../../Utils/Validators/validators"
+import {required} from "../../utils/validators/validators"
 import {login} from "../../redux/auth-reducer"
 import {Redirect} from "react-router-dom"
 import {AllAppTypes} from "../../redux/redux-store";

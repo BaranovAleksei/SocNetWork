@@ -1,5 +1,5 @@
 import React from "react"
-import {follow, UserType} from "../../redux/userspage-reducer"
+import {follow, UserType} from "../../redux/users-reducer"
 import Paginator from "../common/Paginator/Paginator";
 import {User} from "./User";
 

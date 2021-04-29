@@ -1,7 +1,7 @@
 import { usersAPI } from "../api/api";
 import { ThunkAction } from 'redux-thunk';
 import { AllAppTypes } from "./redux-store";
-import {updateObjectInArray} from "../Utils/object-helper";
+import {updateObjectInArray} from "../utils/object-helper";
 
 type PhotoType = {
   small: string
