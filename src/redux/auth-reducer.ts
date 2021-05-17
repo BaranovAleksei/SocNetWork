@@ -1,5 +1,5 @@
 import {BaseThunkType, InferActionsTypes} from "./redux-store"
-import {authApi, securityAPI} from '../api/api'
+import {authApi, ResultCodeForCaptchaEnum, ResultCodesEnum, securityAPI} from '../api/api'
 import {FormAction, stopSubmit} from "redux-form"
 
 export type InitialStateType = typeof initialState
@@ -40,37 +40,36 @@ export const actions = {
 
 export const getAuthUserData = (): ThunkType => async (
   dispatch) => {
-  let response = await authApi.me ()
-      if ( response.data.resultCode === 0) {
-        let { id, login, email } = response.data.data
+  let data = await authApi.me ()
+      if ( data.resultCode === ResultCodesEnum.Success) {
+        let { id, login, email } = data.data
         dispatch (actions.setAuthUserData( id, email, login, true ))
       }
 }
 
-export const login = ( email: string, password: string, rememberMe: boolean):ThunkType => async (
+export const login = ( email: string, password: string, rememberMe: boolean, captcha: string):ThunkType => async (
   dispatch) => {
-    let response = await authApi.login (email, password, rememberMe)
-        if ( response.data.resultCode === 0) {
+    let data = await authApi.login (email, password, rememberMe, captcha)
+        if ( data.resultCode === ResultCodesEnum.Success) {
           dispatch(getAuthUserData())
         }  else {
-          if (response.data.resultCode === 10) {
+          if ( data.resultCode === 10 ) {
             dispatch(getCaptchaUrl())
           }
-          let mes = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
+          let mes = data.messages.length > 0 ? data.messages[0] : 'Some error'
           dispatch(stopSubmit('login', {_error: mes}))
         }
 }
 
-
 export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
-  const response = await securityAPI.getCaptchurl()
+  const response = await securityAPI.getCaptchaUrl()
   const captchaUrl = response.data.url
   dispatch(actions.getCaptchaUrlSuccess(captchaUrl))
 }
 
 export const logout = ():ThunkType => async (dispatch) => {
-    let response = await authApi.logout()
-        if ( response.data.resultCode === 0) {
+    let data = await authApi.logout()
+        if ( data.resultCode === ResultCodesEnum.Success) {
           dispatch(actions.setAuthUserData(null, null, null, false))
         }
 }

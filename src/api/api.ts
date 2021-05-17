@@ -14,7 +14,7 @@ export enum ResultCodesEnum {
   Error = 1
 }
 
-export enum ResultCodeForCapcthaEnum {
+export enum ResultCodeForCaptchaEnum {
   CaptchaIsRequired = 10
 }
 
@@ -28,11 +28,9 @@ export type APIResponseType<D = {}, RC = ResultCodesEnum> = {
   messages: Array<string>
   resultCode: RC
 }
-
 export type SavePhotoResponseDataType = {
   photos: PhotoType
 }
-
 
 export const usersAPI = {
   getUsers(currentPage: number = 1, pageSize: number = 10){
@@ -84,19 +82,34 @@ export const profileAPI = {
   }
 }
 
+
+type MeResponseDataType = {
+  id: number
+  email: string
+  login: string
+}
+type LoginResponseDataType = {
+  userId: number
+}
 export const authApi = {
   me() {
-    return instance.get(`auth/me`)
+    return instance.get<APIResponseType<MeResponseDataType>>(`auth/me`)
+      .then(res => res.data)
   },
-  login(email: string, password: string, rememberMe:boolean = false) {
-    return instance.post(`auth/login`, {email, password, rememberMe})
+  login(email: string, password: string, rememberMe:boolean = false , captcha: string) {
+    return instance.post<APIResponseType<LoginResponseDataType>>(`auth/login`,
+                                                                 {email, password, rememberMe, captcha})
+      .then(res => res.data)
   },
   logout() {
     return instance.delete(`auth/login`)
+      .then(res => res.data)
   }
 }
+
 export const securityAPI = {
-  getCaptchurl() {
+  getCaptchaUrl() {
     return instance.get(`security/get-captcha-url`)
+      .then(res => res.data)
   }
 }
