@@ -7,7 +7,7 @@ export type MessagesType = {
   message: string
 };
 
-export type DialogPageType = {
+export type InitialStateType = {
   dialogs: Array<DialogsType>
   messages: Array<MessagesType>
 }
@@ -19,9 +19,9 @@ export const sendMessage = (newMessage: string) => {
   }as const
 };
 
-export type DialogsPageActionType = ReturnType<typeof sendMessage>
+type ActionType = ReturnType<typeof sendMessage>
 
-const initialState: DialogPageType = {
+const initialState: InitialStateType = {
   dialogs: [
     {id: 1, name: 'Dimon'},
     {id: 2, name: 'Andrew'},
@@ -39,7 +39,7 @@ const initialState: DialogPageType = {
   ]
 }
 
-const dialogsReducer = (state = initialState , action: DialogsPageActionType): DialogPageType  => {
+const dialogsReducer = (state = initialState , action: ActionType): InitialStateType  => {
   switch (action.type) {
 
     case "SEND-MESSAGE":

@@ -13,7 +13,7 @@ import {
   getPageSize,
   getTotalUsersCount,
   getUserSuper
-} from "../../redux/user-selectors";
+} from "../../redux/users-selectors";
 
 type mapStateToPropsType = {
   users: Array<UserType>

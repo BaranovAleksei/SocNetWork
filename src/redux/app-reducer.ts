@@ -2,10 +2,10 @@ import {ThunkAction} from "redux-thunk"
 import {AllAppTypes} from "./redux-store"
 import {getAuthUserData} from "./auth-reducer"
 
-export type appRedType = {
+export type initialStateType = {
   initialized: boolean
 }
-const initialState: appRedType = {
+const initialState: initialStateType = {
   initialized: false
 }
 
@@ -20,7 +20,7 @@ export const initializedSuccess = () => {
 
 type ActionTypeApp = initializedSuccessType
 
-const appReducer = (state = initialState, action: ActionTypeApp): appRedType => {
+const appReducer = (state = initialState, action: ActionTypeApp): initialStateType => {
   switch (action.type) {
     case 'SET_INITIALIZED':
       return {

@@ -22,7 +22,6 @@ class App extends Component<any, any> {
 
   catchAllUnhandledErrors = (promiseRejectionEvent: any) => {
     alert ('Some error occured')
-    // console.error(promiseRejectionEvent)
   }
 
 	componentDidMount() {
