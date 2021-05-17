@@ -1,4 +1,5 @@
 import axios from "axios";
+import {UserType} from "../Types/Types";
 
 const instance = axios.create({
   withCredentials: true,
@@ -7,6 +8,27 @@ const instance = axios.create({
     'API-KEY': '3edab39c-8b84-4e3b-a130-42dfb20faf00'
   }
 })
+
+export enum ResultCodesEnum {
+  Success = 0,
+  Error = 1
+}
+
+export enum ResultCodeForCapcthaEnum {
+  CaptchaIsRequired = 10
+}
+
+export type GetItemsType = {
+  items: Array<UserType>
+  totalCount: number
+  error: string | null
+}
+export type APIResponseType<D = {}, RC = ResultCodesEnum> = {
+  data: D
+  messages: Array<string>
+  resultCode: RC
+}
+
 
 export const usersAPI = {
   getUsers(currentPage: number = 1, pageSize: number = 10){

@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from "react-redux";
 import { AllAppTypes } from "../../redux/redux-store";
 import { follow, unfollow, setUsers,
-  setCurrentPage, setTotalUsersCount, UserType, setIsFetching, toggleFollowingProgress, requestUsers
+  setCurrentPage, setTotalUsersCount, setIsFetching, toggleFollowingProgress, requestUsers
 } from "../../redux/users-reducer";
 import { Users } from "./Users";
 import { Preloader } from "../common/Preloader/Preloader";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {
   getCurrentPage, getFollowingInProgress, getIsFetching,
@@ -14,6 +13,7 @@ import {
   getTotalUsersCount,
   getUserSuper
 } from "../../redux/users-selectors";
+import {UserType} from "../../Types/Types";
 
 type mapStateToPropsType = {
   users: Array<UserType>

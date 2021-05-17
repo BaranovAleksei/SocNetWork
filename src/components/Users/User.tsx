@@ -2,6 +2,7 @@ import React from "react"
 import defaultImg from '../../img/defaultImg.png'
 import s from './User.module.sass'
 import { NavLink } from "react-router-dom"
+import {UsersPropsType} from "./Users";
 
 // export type UserPropsType = {
 //   users: Array<UserType>

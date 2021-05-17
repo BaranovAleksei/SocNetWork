@@ -1,7 +1,7 @@
 import React from "react"
-import {follow, UserType} from "../../redux/users-reducer"
 import Paginator from "../common/Paginator/Paginator";
 import {User} from "./User";
+import {UserType} from "../../Types/Types";
 
 export type UsersPropsType = {
   users: Array<UserType>

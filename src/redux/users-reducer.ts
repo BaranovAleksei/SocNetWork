@@ -3,6 +3,8 @@ import { ThunkAction } from 'redux-thunk';
 import { AllAppTypes } from "./redux-store";
 import {updateObjectInArray} from "../utils/object-helper";
 import {UsersPageType, UserType} from "../Types/Types";
+import {Dispatch} from "react"
+import {APIResponseType} from '../api/api'
 
   const SET_CURRENT_PAGE = 'USERS_REDUCER/SET_CURRENT_PAGE'
   const FOLLOW = 'USERS_REDUCER/FOLLOW'
@@ -153,11 +155,14 @@ export const requestUsers = (currentPage: number, pageSize: number): ThunkType =
     dispatch(setTotalUsersCount(data.totalCount))
   }
 }
-//@ts-ignore
-const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {
+
+const _followUnfollowFlow = async (dispatch: Dispatch<ActionType>,
+                                  userId: number,
+                                  apiMethod: (userId: number) => Promise<APIResponseType>,
+                                  actionCreator: (userId: number) => ActionType ) => {
   dispatch( toggleFollowingProgress( true, userId))
   let response = await apiMethod(userId)
-  if (response.data.resultCode === 0) {
+  if (response.resultCode === 0) {
     dispatch (actionCreator(userId))
   }
   dispatch (toggleFollowingProgress(false, userId))
@@ -165,13 +170,13 @@ const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) =>
 
 export const follow = (userId: number): ThunkType => {
   return async (dispatch, getState) => {
-    followUnfollowFlow(dispatch, userId, usersAPI.post.bind(usersAPI), followSuccess )
+    await _followUnfollowFlow(dispatch, userId, usersAPI.post.bind(usersAPI), followSuccess )
   }
 }
 
 export const unfollow = (userId: number): ThunkType => {
   return async (dispatch, getState) => {
-    followUnfollowFlow(dispatch, userId, usersAPI.delete.bind(usersAPI), unfollowSuccess)
+    await  _followUnfollowFlow(dispatch, userId, usersAPI.delete.bind(usersAPI), unfollowSuccess)
   }
 }
 

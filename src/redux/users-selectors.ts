@@ -4,7 +4,7 @@ import {createSelector} from 'reselect'
 const getUsers = (state: AllAppTypes)  => {
     return state.UsersPage.users
 }
-// @ts-ignore
+
 export const getUserSuper = createSelector( getUsers, (users) => {
     return users.filter(u => true)
 })
