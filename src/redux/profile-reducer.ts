@@ -1,6 +1,8 @@
 import {profileAPI, usersAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
 import {PhotoType, PostType, ProfileType} from "../Types/Types";
+import {ThunkAction} from "redux-thunk";
+import {AllAppTypes} from "./redux-store";
 
 const ADD_POST = 'PROFILE/ADD-POST'
 const SET_USER_PROFILE = 'PROFILE/SET_USER_PROFILE'
@@ -80,39 +82,47 @@ export const savePhotoSuccess = (photos: PhotoType): SavePhotoSuccessType =>
 
 
 //Thunk
-export const getUserProfile = (userId:number) => async (dispatch: any) => {
-    const response = await usersAPI.getProfile(userId);
-    dispatch(setUserProfile(response.data));
+type ThunkType = ThunkAction<Promise<void>, AllAppTypes, unknown, ActionType>
+
+export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
+    const data = await usersAPI.getProfile(userId);
+    dispatch(setUserProfile(data));
 }
 
-export const getStatus = (userId: number) => async (dispatch: any) => {
-    let response = await profileAPI.getStatus(userId);
-    dispatch(setStatus(response.data));
+export const getStatus = (userId: number): ThunkType => async (dispatch) => {
+    let data = await profileAPI.getStatus(userId);
+    dispatch(setStatus(data));
 }
 
-export const updateStatus = (status: string) => async (dispatch: any) => {
-    let response = await profileAPI.updateStatus(status);
+export const updateStatus = (status: string): ThunkType => async (dispatch) => {
+    let data = await profileAPI.updateStatus(status);
 
-    if (response.data.resultCode === 0) {
+    if (data.resultCode === 0) {
         dispatch(setStatus(status));
     }
 }
-export const savePhoto = (file: any) => async (dispatch: any) => {
-    let response = await profileAPI.savePhoto(file);
+export const savePhoto = (file: File): ThunkType => async (dispatch) => {
+    let data = await profileAPI.savePhoto(file);
 
-    if (response.data.resultCode === 0) {
-        dispatch(savePhotoSuccess(response.data.data.photos));
+    if (data.resultCode === 0) {
+        dispatch(savePhotoSuccess(data.data.photos));
     }
 }
-export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => {
+export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch,
+                                                                       getState) => {
     const userId = getState().Auth.userId;
-    const response = await profileAPI.saveProfile(profile);
+    const data = await profileAPI.saveProfile(profile);
 
-    if (response.data.resultCode === 0) {
-        dispatch(getUserProfile(userId));
+    if (data.resultCode === 0) {
+      if (userId != null) {
+        dispatch(getUserProfile(userId))
+      } else {
+        throw new Error("userId can't be null")
+      }
     } else {
-        dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0] }));
-        return Promise.reject(response.data.messages[0]);
+      // @ts-ignore
+      dispatch(stopSubmit("edit-profile", {_error: data.messages[0] }))
+      return Promise.reject(data.messages[0])
     }
 }
 

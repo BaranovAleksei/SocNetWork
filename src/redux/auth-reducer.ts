@@ -51,27 +51,23 @@ export const login = ( email: string, password: string, rememberMe: boolean):Thu
   dispatch) => {
     let response = await authApi.login (email, password, rememberMe)
         if ( response.data.resultCode === 0) {
-          // @ts-ignore
           dispatch(getAuthUserData())
         }  else {
           if (response.data.resultCode === 10) {
-            // @ts-ignore
             dispatch(getCaptchaUrl())
           }
           let mes = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
-          // @ts-ignore
           dispatch(stopSubmit('login', {_error: mes}))
         }
 }
 
-//@ts-ignore
-export const getCaptchaUrl = ( ) => async (dispatch) => {
+
+export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
   const response = await securityAPI.getCaptchurl()
   const captchaUrl = response.data.url
   dispatch(actions.getCaptchaUrlSuccess(captchaUrl))
 }
 
-//@ts-ignore
 export const logout = ():ThunkType => async (dispatch) => {
     let response = await authApi.logout()
         if ( response.data.resultCode === 0) {

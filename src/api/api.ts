@@ -1,5 +1,5 @@
 import axios from "axios";
-import {UserType} from "../Types/Types";
+import {PhotoType, ProfileType, UserType} from "../Types/Types";
 
 const instance = axios.create({
   withCredentials: true,
@@ -27,6 +27,10 @@ export type APIResponseType<D = {}, RC = ResultCodesEnum> = {
   data: D
   messages: Array<string>
   resultCode: RC
+}
+
+export type SavePhotoResponseDataType = {
+  photos: PhotoType
 }
 
 
@@ -57,35 +61,31 @@ export const usersAPI = {
 
 export const profileAPI = {
   getProfile(userId: number) {
-    return instance.get(`profile/` + userId)
+    return instance.get<ProfileType>(`profile/` + userId).then(res => res.data)
   },
-  getStatus(userId: number){
-    return instance.get(`profile/status/` + userId)
+  getStatus(userId: number) {
+    return instance.get<string>(`profile/status/` + userId).then(res => res.data)
   },
-  updateStatus(status: any){
-    return instance.put(`profile/status`, {
-      status: status })
+  updateStatus(status: string) {
+    return instance.put<APIResponseType>(`profile/status`, {status: status}).then(res => res.data);
   },
-  savePhoto(photoFile: any){
-    const formData = new FormData()
-    formData.append('image', photoFile)
-    return instance.put(`profile/photo`, formData, {
+  savePhoto(photoFile: File) {
+    const formData = new FormData();
+    formData.append("image", photoFile);
+
+    return instance.put<APIResponseType<SavePhotoResponseDataType>>(`profile/photo`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
-    })
+    }).then(res => res.data);
   },
-  saveProfile(profile: any) {
-    return instance.put(`profile`, profile)
+  saveProfile(profile: ProfileType) {
+    return instance.put<APIResponseType>(`profile`, profile).then(res => res.data);
   }
 }
 
 export const authApi = {
   me() {
-    // return instance.get(`auth/me`)
-    //   .then(response => {
-    //     return response.data
-    //   })
     return instance.get(`auth/me`)
   },
   login(email: string, password: string, rememberMe:boolean = false) {
