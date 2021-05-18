@@ -1,10 +1,8 @@
 import {BaseThunkType, InferActionsTypes} from "./redux-store"
-import {authApi, ResultCodeForCaptchaEnum, ResultCodesEnum, securityAPI} from '../api/api'
+import {ResultCodeForCaptchaEnum, ResultCodesEnum} from '../api/api'
 import {FormAction, stopSubmit} from "redux-form"
-
-export type InitialStateType = typeof initialState
-type ActionsType = InferActionsTypes<typeof actions>
-type ThunkType = BaseThunkType<ActionsType | FormAction>
+import {authApi} from "../api/auth-api";
+import {securityAPI} from "../api/security-api";
 
 const initialState = {
   userId: null as (number | null),
@@ -27,17 +25,15 @@ const authReducer = (state = initialState, action: ActionsType): InitialStateTyp
       return state;
   }
 };
-
+//actions
 export const actions = {
   setAuthUserData: (userId: number | null, email: string | null, login: string | null, isAuth: boolean) => ({
-    type: 'SN/auth/SET_USER_DATA',
-    payload: {userId, email, login, isAuth}} as const),
-
+    type: 'SN/auth/SET_USER_DATA', payload: {userId, email, login, isAuth}} as const),
   getCaptchaUrlSuccess: (captchaUrl: string) => ({
-    type: 'SN/auth/GET_CAPTCHA_URL_SUCCESS',
-    payload: {captchaUrl}} as const)
+    type: 'SN/auth/GET_CAPTCHA_URL_SUCCESS', payload: {captchaUrl}} as const)
 }
 
+//Thunk
 export const getAuthUserData = (): ThunkType => async (
   dispatch) => {
   let data = await authApi.me ()
@@ -62,8 +58,8 @@ export const login = ( email: string, password: string, rememberMe: boolean, cap
 }
 
 export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
-  const response = await securityAPI.getCaptchaUrl()
-  const captchaUrl = response.data.url
+  const data = await securityAPI.getCaptchaUrl()
+  const captchaUrl = data.url
   dispatch(actions.getCaptchaUrlSuccess(captchaUrl))
 }
 
@@ -75,3 +71,8 @@ export const logout = ():ThunkType => async (dispatch) => {
 }
 
 export default authReducer
+
+//type
+export type InitialStateType = typeof initialState
+type ActionsType = InferActionsTypes<typeof actions>
+type ThunkType = BaseThunkType<ActionsType | FormAction>
