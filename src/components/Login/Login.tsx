@@ -6,7 +6,7 @@ import {Input, createField, GetStringKeys} from '../common/FormsControls/FormsCo
 import {required} from "../../utils/validators/validators"
 import {login} from "../../redux/auth-reducer"
 import {Redirect} from "react-router-dom"
-import {AllAppTypes} from "../../redux/redux-store";
+import {AllAppTypes} from "../../redux/redux-store"
 
 type LoginFormOwnProps = {
   captchaUrl: string | null | undefined

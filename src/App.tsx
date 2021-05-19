@@ -18,11 +18,6 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 const SuspendedDialogs = withSuspense(DialogsContainer)
 const SuspendedProfile = withSuspense(ProfileContainer)
 
-type MapPropsType = ReturnType<typeof mapStateToProps>
-type DispatchPropsType = {
-  initializedApp: () => void
-}
-
 class App extends Component<MapPropsType & DispatchPropsType> {
   catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
     alert ('Some error occured')
@@ -36,11 +31,9 @@ class App extends Component<MapPropsType & DispatchPropsType> {
     window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
 	}
 	render () {
-
-		if(!this.props.initialized) {
+    if(!this.props.initialized) {
 		  return <Preloader/>
 		}
-
 		return (
 			<div className="App">
         <HeaderContainer />
@@ -63,9 +56,6 @@ class App extends Component<MapPropsType & DispatchPropsType> {
 			)
 	}
 }
-type mapStateToPropsType = {
-	initialized: boolean
-}
 
 const mapStateToProps = (state: AllAppTypes): mapStateToPropsType => ({
 		initialized: state.App.initialized
@@ -84,3 +74,7 @@ const SamuraiJSApp = (props: any) => {
 }
 
 export default SamuraiJSApp
+//Type
+type mapStateToPropsType = { initialized: boolean }
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = { initializedApp: () => void }

@@ -11,7 +11,6 @@ type mapStateToPT = {
 	login: string | null
 }
 type mapDispatchToPT= {
-	// getAuthUserData: () => void
 	logout: () => void
 }
 
