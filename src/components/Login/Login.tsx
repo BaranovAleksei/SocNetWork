@@ -2,7 +2,7 @@ import React from "react";
 import s from './Login.module.sass'
 import {InjectedFormProps, reduxForm} from "redux-form"
 import {connect} from "react-redux"
-import {Input, createField } from '../common/FormsControls/FormsControls'
+import {Input, createField, GetStringKeys} from '../common/FormsControls/FormsControls'
 import {required} from "../../utils/validators/validators"
 import {login} from "../../redux/auth-reducer"
 import {Redirect} from "react-router-dom"
@@ -52,7 +52,7 @@ export type LoginFormValuesType = {
   password: string
   email: string
 }
-type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string>
+type LoginFormValuesTypeKeys = GetStringKeys<LoginFormValuesType>
 
 const Login: React.FC<MapStatePropsType & MapDispatchPropsType> = ( props) => {
 

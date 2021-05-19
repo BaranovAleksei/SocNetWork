@@ -1,35 +1,16 @@
 import React from 'react'
 import { actions } from "../../../redux/profile-reducer"
-import MyPosts from "./MyPosts"
+import MyPosts, {MapPropsType, DispatchPropsType} from "./MyPosts"
 import {connect} from "react-redux"
-import {PostType} from "../../../Types/Types";
-import {AllAppTypes} from "../../../redux/redux-store";
-import {compose} from "redux";
+import {AllAppTypes} from "../../../redux/redux-store"
 
-type mapStateToPropsType = {
-    posts: Array<PostType>
-    newPostText: string
-}
-type mapDispatchToPropsType = {
-    addPost: (newPostText: string) => void
-}
-
-const mapStateToProps = (state: AllAppTypes): mapStateToPropsType => {
+const mapStateToProps = (state: AllAppTypes) => {
     return {
-        posts: state.ProfilePage.posts,
-        newPostText: state.ProfilePage.newPostText
+        posts: state.ProfilePage.posts
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        addPost: (newPostText: string) => {
-            dispatch(actions.addPostActionCreator(newPostText));
-        }
-    }
-}
+const MyPostsContainer = connect< MapPropsType, DispatchPropsType,{}, AllAppTypes>(mapStateToProps,
+  {addPost: actions.addPostActionCreator})(MyPosts);
 
-const MyPostsContainer = connect<mapStateToPropsType, mapDispatchToPropsType,{}, AllAppTypes>(
-  mapStateToProps, mapDispatchToProps)(MyPosts);
-
-export default compose<React.ComponentType>(MyPostsContainer)
+export default MyPostsContainer

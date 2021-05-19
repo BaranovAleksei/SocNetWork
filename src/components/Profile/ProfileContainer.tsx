@@ -48,7 +48,7 @@ class ProfileContainer extends React.Component<PropsType> {
         this.refreshProfile();
     }
 
-    componentDidUpdate(prevProps: any, prevState: any, snapshot: any) {
+    componentDidUpdate(prevProps: PropsType, prevState: ProfileType) {
         if (this.props.match.params.userId != prevProps.match.params.userId) {
             this.refreshProfile();
         }
@@ -80,4 +80,4 @@ export default compose<React.ComponentType>(
         getUserProfile, getStatus,
         updateStatus, savePhoto, saveProfile
     }), withRouter
-)(ProfileContainer);
+)(ProfileContainer)
