@@ -1,67 +1,40 @@
-import React, { ChangeEvent } from 'react';
-import s from './Dialogs.module.sass';
-import { DialogItem } from './DialogItem/DialogItem';
-import { Message } from "./Message/Message";
-import { Redirect } from 'react-router-dom';
-import {reduxForm, Field } from "redux-form";
-import {Textarea} from "../common/FormsControls/FormsControls";
-import {maxLengthCreator, required} from "../../utils/validators/validators";
+import React from 'react'
+import s from './Dialogs.module.sass'
+import { DialogItem } from './DialogItem/DialogItem'
+import { Message } from "./Message/Message"
+import {InitialStateType} from "../../redux/dialogs-reducer"
+import AddMessageForm from "./AddMessageForm/AddMessageForm"
 
-type DialogsType = {
-  id: number
-  name: string
-}
-type MessagesType = {
-  id: number
-  message: string
-};
-
-type DialogsPropsType = {
-  dialogs: Array<DialogsType>
-  messages: Array<MessagesType>
-  // messageForNewMessage: string
-  // changeMessage: ( text: string) => void
-  addMessage: (string: string ) => void
+type PropsType = {
+  dialogsPage: InitialStateType
+  sendMessage: (messageText: string) => void
 }
 
-export const Dialogs: React.FC< DialogsPropsType > = (props) => {
+export type NewMessageFormValuesType = {
+  newMessageBody: string
+}
 
-  // const changeMessage = ( e: ChangeEvent<HTMLInputElement> ) => {
-  //   const text = e.currentTarget.value;
-  //   props.changeMessage( text );
-  // };
-  // const addMessage = (newMessage: string) => {
-  //   props.addMessage(newMessage);
-  // }
+const Dialogs: React.FC<PropsType> = (props) => {
+  let state = props.dialogsPage
 
-  let addNewMessage = (values: any) => {
-    props.addMessage(values.newMessageBody)
+  let dialogsElements = state.dialogs.map( d => <DialogItem name={d.name} key={d.id} id={d.id} />  );
+  let messagesElements = state.messages.map( m => <Message message={m.message} key={m.id}  id={m.id}/> );
+
+  let addNewMessage = (values: NewMessageFormValuesType) => {
+    props.sendMessage(values.newMessageBody);
   }
 
   return (
     <div className={s.dialogs}>
       <div className={s.dialogsItems}>
-        { props.dialogs.map( (dial: DialogsType ) => ( <DialogItem name = { dial.name } id = { dial.id }/> ))}
+        { dialogsElements }
       </div>
-      <div className={s.messagesOver}>
-        { props.messages.map( (mes: MessagesType ) => ( <Message id = {mes.id}  message={ mes.message}/> ))}
-        <AddMessageFormRedux onSubmit={addNewMessage}/>
+      <div className={s.messages}>
+        <div>{ messagesElements }</div>
       </div>
+      <AddMessageForm onSubmit={addNewMessage} />
     </div>
   )
 }
-const maxLength100 = maxLengthCreator(100)
 
-const AddMessageForm = (props:any) => {
-  return  <>
-    <form onSubmit={ props.handleSubmit }>
-      <Field component={Textarea}
-             name = 'newMessageBody'
-             validate = {[required, maxLength100]}
-             placeholder='Enter your message'/>
-      <button>add Message</button>
-    </form>
-  </>
-}
-
-const AddMessageFormRedux = reduxForm({form: 'dialogAddMessageForm'})(AddMessageForm)
+export default Dialogs

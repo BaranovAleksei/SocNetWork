@@ -18,23 +18,24 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 const SuspendedDialogs = withSuspense(DialogsContainer)
 const SuspendedProfile = withSuspense(ProfileContainer)
 
-class App extends Component<any, any> {
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = {
+  initializedApp: () => void
+}
 
-  catchAllUnhandledErrors = (promiseRejectionEvent: any) => {
+class App extends Component<MapPropsType & DispatchPropsType> {
+  catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
     alert ('Some error occured')
   }
-
+  componentWillMount() {
+    window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+  }
 	componentDidMount() {
 		//@ts-ignore
 		this.props.initializeApp()
     window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
 	}
-
-	componentWillMount() {
-    window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
-  }
-
-  render () {
+	render () {
 
 		if(!this.props.initialized) {
 		  return <Preloader/>

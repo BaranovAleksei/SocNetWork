@@ -10,10 +10,8 @@ export type UsersPropsType = {
   currentPage: number
   follow: (userId: number) => void
   unfollow: (userId: number) => void
-  // setCurrentPage: (currentPage: number) => void
   onPageChanged: (page: number) => void
   followingInProgress: Array<number>
-  // toggleFollowingProgress: (followingInProgress: boolean, id: number) => void
 }
 
 export const Users:React.FC<UsersPropsType> = ({users, currentPage, onPageChanged, totalUsersCount,

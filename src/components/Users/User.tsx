@@ -2,22 +2,16 @@ import React from "react"
 import defaultImg from '../../img/defaultImg.png'
 import s from './User.module.sass'
 import { NavLink } from "react-router-dom"
-import {UsersPropsType} from "./Users";
+import {UserType} from "../../Types/Types";
 
-// export type UserPropsType = {
-//   users: Array<UserType>
-//   pageSize: number
-//   totalUsersCount: number
-//   currentPage: number
-//   follow: (userId: number) => void
-//   unfollow: (userId: number) => void
-//   setCurrentPage: (currentPage: number) => void
-//   onPageChanged: (page: number) => void
-//   followingInProgress: Array<number>
-//   toggleFollowingProgress: (followingInProgress: boolean, id: number) => void
-// }
+type PropsType = {
+  user: UserType
+  follow: (userId: number) => void
+  unfollow: (userId: number) => void
+  followingInProgress: Array<number>
+}
 
-export const User:React.FC<any> = ( {user, followingInProgress, unfollow, follow } ) => {
+export const User:React.FC<PropsType> = ( {user, followingInProgress, unfollow, follow } ) => {
   return <div>
      <span>
        <div>
