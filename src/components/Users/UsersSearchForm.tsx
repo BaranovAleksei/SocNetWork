@@ -40,8 +40,8 @@ export const UsersSearchForm: React.FC<PropsType> = React.memo((props) => {
 
           <Field name="friend" as="select">
             <option value="null">All</option>
-            <option value="true">Only followed</option>
-            <option value="false">Only unfollowed</option>
+            <option value="true">Only friends</option>
+            <option value="false">Only no friends</option>
           </Field>
           <button type="submit" disabled={isSubmitting}>
             Find

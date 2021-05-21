@@ -18,7 +18,7 @@ let initialState = {
   }
 }
 
-const usersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
+const usersReducer = (state = initialState, action: ActionsTypes): InitialState => {
   switch (action.type) {
     case 'SN/USERS/FOLLOW':
       return {
@@ -117,12 +117,10 @@ export const unfollow = (userId: number): ThunkType => {
     await _followUnfollowFlow(dispatch, userId, usersApi.delete.bind(usersApi), actions.unfollowSuccess)
   }
 }
-//@ts-ignore
+
 export default usersReducer;
-//@ts-ignore
-type InitialStateType = typeof initialState
+
+export type InitialState = typeof initialState
 export type FilterType = typeof initialState.filter
-//@ts-ignore
 type ActionsTypes = InferActionsTypes<typeof actions>
-//@ts-ignore
-type ThunkType = BaseThunkType<ActionsTypes>;
+type ThunkType = BaseThunkType<ActionsTypes>

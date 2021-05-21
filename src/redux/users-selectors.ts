@@ -14,7 +14,7 @@ export const getPageSize = (state: AllAppTypes)  => {
 }
 
 export const getTotalUsersCount = (state: AllAppTypes)  => {
-    return state.UsersPage.totalUserCount
+    return state.UsersPage.totalUsersCount
 }
 
 export const getCurrentPage = (state: AllAppTypes)  => {
@@ -30,5 +30,5 @@ export const getFollowingInProgress = (state: AllAppTypes)  => {
 }
 
 export const getUsersFilter = (state: AllAppTypes) => {
-  return state.UsersPage.filter;
+  return state.UsersPage.filter
 }
