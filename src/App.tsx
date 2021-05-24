@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
-import './App.css';
-import {BrowserRouter, Route, withRouter, Switch, Redirect} from 'react-router-dom';
+import React, {Component} from 'react'
+import './App.css'
+import {BrowserRouter, Route, withRouter, Switch, Redirect} from 'react-router-dom'
 import { initializeApp } from './redux/app-reducer'
 import { Navbar } from './components/Navbar/Navbar'
-import UsersContainer from './components/Users/UsersContainer'
 import HeaderContainer from './components/Header/HeaderContainer'
-import Login from './components/Login/Login'
-import {connect, Provider} from "react-redux";
-import {compose} from "redux";
-import store, {AllAppTypes} from "./redux/redux-store";
-import {Preloader} from "./components/common/Preloader/Preloader";
+import {connect, Provider} from "react-redux"
+import {compose} from "redux"
+import store, {AllAppTypes} from "./redux/redux-store"
+import {Preloader} from "./components/common/Preloader/Preloader"
 import {withSuspense} from "./hoc/withSuspense"
+import {LoginPage} from "./components/Login/LoginPage"
+import {UsersPage} from "./components/Users/UsersContainer";
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'))
@@ -18,18 +18,22 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 const SuspendedDialogs = withSuspense(DialogsContainer)
 const SuspendedProfile = withSuspense(ProfileContainer)
 
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = { initializedApp: () => void }
+
 class App extends Component<MapPropsType & DispatchPropsType> {
   catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
     alert ('Some error occured')
   }
+  componentDidMount() {
+    //@ts-ignore
+    this.props.initializeApp()
+    window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+  }
   componentWillMount() {
     window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
   }
-	componentDidMount() {
-		//@ts-ignore
-		this.props.initializeApp()
-    window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
-	}
+
 	render () {
     if(!this.props.initialized) {
 		  return <Preloader/>
@@ -46,9 +50,9 @@ class App extends Component<MapPropsType & DispatchPropsType> {
           <Route path='/dialogs'
                  render = { () => <SuspendedDialogs/> }/>
           <Route path='/users'
-                 render = { () => <UsersContainer />}/>
+                 render = { () => <UsersPage pageTitle={'SAMYRAI'} /> } />
           <Route path='/login'
-                 render = { () => <Login /> } />
+                 render = { () => <LoginPage /> } />
           <Route path='*'
                  render = { () => <div>404 - page not found</div> } />
         </Switch>
@@ -57,7 +61,7 @@ class App extends Component<MapPropsType & DispatchPropsType> {
 	}
 }
 
-const mapStateToProps = (state: AllAppTypes): mapStateToPropsType => ({
+const mapStateToProps = (state: AllAppTypes) => ({
 		initialized: state.App.initialized
 })
 
@@ -65,7 +69,7 @@ const AppContainer = compose<React.ComponentType>(
 	withRouter,
   connect(mapStateToProps , {initializeApp}))(App);
 
-const SamuraiJSApp = (props: any) => {
+const SamuraiJSApp: React.FC = () => {
   return <BrowserRouter>
     <Provider store={ store }>
       <AppContainer/>
@@ -74,7 +78,3 @@ const SamuraiJSApp = (props: any) => {
 }
 
 export default SamuraiJSApp
-//Type
-type mapStateToPropsType = { initialized: boolean }
-type MapPropsType = ReturnType<typeof mapStateToProps>
-type DispatchPropsType = { initializedApp: () => void }
