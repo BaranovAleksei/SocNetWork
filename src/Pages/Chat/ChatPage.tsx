@@ -14,8 +14,6 @@ const ChatPage: React.FC = () => {
 const Chat: React.FC = () => {
 
   const dispatch = useDispatch()
-
-
   const status = useSelector((state: AllAppTypes) => state.chat.status)
 
   useEffect(() => {

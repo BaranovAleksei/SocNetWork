@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom'
 import {selectCurrentUserLogin, selectIsAuth} from "../../redux/auth-selector";
 import {logout} from '../../redux/auth-reducer'
 import {Avatar, Button, Col, Layout, Menu, Row } from 'antd'
+import s from './Header.module.sass'
+import krasty from '../../img/krasty.png'
 
 export type MapPropsType = {}
 
@@ -24,16 +26,14 @@ export const Header: React.FC<MapPropsType> = (props) => {
   const {Header} = Layout
 
   return (
-        <Header className = 'header'>
+        <Header className = {s.header}>
             <Row>
-              <Col span={18}>
-                <Menu theme = 'dark' mode='horizontal' defaultSelectedKeys={['2']}>
-                  <Menu.Item key='1'><Link to='developers'>Developers</Link> </Menu.Item>
-                </Menu>
+              <Col span={18} className={s.logo}>
+                <img src={krasty} alt=""/>
               </Col>
               {isAuth
                 ?<> <Col span={1}>
-                  <Avatar alt = {login || ''} style={{backgroundColor: '#87d068'}} icon = {<UserOutlined/>}/>
+                  <Avatar alt = {login || ''} style={{backgroundColor: '#0000fe'}} icon = {<UserOutlined/>}/>
                 </Col>
                   <Col span ={ 5}>
                     <Button onClick={logoutCallback}>Log out</Button>

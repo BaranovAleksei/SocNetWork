@@ -13,9 +13,10 @@ import {UsersPage} from "./components/Users/UsersContainer"
 
 import {Breadcrumb, Layout, Menu} from 'antd'
 import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons'
+import {Header} from "./components/Header/Header";
 
 const { SubMenu } = Menu
-const { Header, Content, Sider } = Layout
+const { Footer, Content, Sider } = Layout
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'))
@@ -48,62 +49,51 @@ class App extends Component<MapPropsType & DispatchPropsType> {
     return (
       <Layout>
         <Header/>
-        <Layout>
-          <Sider width={200} className="site-layout-background">
-            <Menu
-                  mode="inline"
-                  defaultSelectedKeys={['1']}
-                  defaultOpenKeys={['sub1']}
-                  style={{ height: '100%', borderRight: 0 }}
-            >
-              <SubMenu key="sub1" icon={<UserOutlined/>} title="My profile">
-                <Menu.Item key="1"><Link to='/profile'>Profile</Link></Menu.Item>
-                <Menu.Item key="2"><Link to='/dialogs'>Dialogs</Link></Menu.Item>
-                {/*<Menu.Item key="3">option3</Menu.Item>*/}
-                {/*<Menu.Item key="4">option4</Menu.Item>*/}
-              </SubMenu>
-              <SubMenu key="sub2" icon={<LaptopOutlined/>} title="Developers">
-                <Menu.Item key="3"><Link to = '/users'>Developers</Link></Menu.Item>
-                {/*<Menu.Item key="6">option6</Menu.Item>*/}
-                {/*<Menu.Item key="7">option7</Menu.Item>*/}
-                {/*<Menu.Item key="8">option8</Menu.Item>*/}
-              </SubMenu>
-              <SubMenu key="sub3" icon={<NotificationOutlined />} title="Chat">
-                <Menu.Item key="4"><Link to = '/chatDev'>Chat Developers</Link></Menu.Item>
-              {/*  <Menu.Item key="10">option10</Menu.Item>*/}
-              {/*  <Menu.Item key="11">option11</Menu.Item>*/}
-              {/*  <Menu.Item key="12">option12</Menu.Item>*/}
-              </SubMenu>
-            </Menu>
-          </Sider>
-          <Layout style={{ padding: '0 24px 24px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item>List</Breadcrumb.Item>
-              <Breadcrumb.Item>App</Breadcrumb.Item>
-            </Breadcrumb>
-            <Content>
-              <Switch>
-                <Route exact path='/'
-                       render = {() => <Redirect to = {'/profile'}/>}/>
-                <Route path='/profile/:userId?'
-                       render = { () => <SuspendedProfile/> }/>
-                <Route path='/dialogs'
-                       render = { () => <SuspendedDialogs/> }/>
-                <Route path='/users'
-                       render = { () => <UsersPage pageTitle={'SAMYRAI'} /> } />
-                <Route path='/login'
-                       render = { () => <LoginPage /> } />
-                <Route path='/chatDev'
-                       render = { () => <SuspendedChatPage /> } />
-                <Route path='*'
-                       render = { () => <div>404 - page not found</div> } />
-              </Switch>
-            </Content>
+        <Content style={{padding: '0 50px'}}>
+          <Breadcrumb style={{margin: '16px 0'}}>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>My profile</Breadcrumb.Item>
+          </Breadcrumb>
+          <Layout className="site-layout-background" style={{padding: '24px 0'}}>
+            <Sider width={200} className="site-layout-background">
+              <Menu mode="inline" style={{ height: '100%', borderRight: 0 }}>
+                <SubMenu key="sub1" icon={<UserOutlined/>} title="My profile">
+                  <Menu.Item key="1"><Link to='/profile'>Profile</Link></Menu.Item>
+                  <Menu.Item key="2"><Link to='/dialogs'>Dialogs</Link></Menu.Item>
+                </SubMenu>
+                <SubMenu key="sub2" icon={<LaptopOutlined/>} title="Developers">
+                  <Menu.Item key="3"><Link to = '/users'>Developers</Link></Menu.Item>
+                </SubMenu>
+                <SubMenu key="sub3" icon={<NotificationOutlined />} title="Chat">
+                  <Menu.Item key="4"><Link to = '/chatDev'>Chat Developers</Link></Menu.Item>
+                </SubMenu>
+              </Menu>
+            </Sider>
+            <Layout style={{ padding: '0 24px 24px' }}>
+              <Content style={{padding: '0 24px', minHeight: 280}}>
+                <Switch>
+                  <Route exact path='/'
+                         render = {() => <Redirect to = {'/profile'}/>}/>
+                  <Route path='/profile/:userId?'
+                         render = { () => <SuspendedProfile/> }/>
+                  <Route path='/dialogs'
+                         render = { () => <SuspendedDialogs/> }/>
+                  <Route path='/users'
+                         render = { () => <UsersPage pageTitle={'SAMYRAI'} /> } />
+                  <Route path='/login'
+                         render = { () => <LoginPage /> } />
+                  <Route path='/chatDev'
+                         render = { () => <SuspendedChatPage /> } />
+                  <Route path='*'
+                         render = { () => <div>404 - page not found</div> } />
+                </Switch>
+              </Content>
+            </Layout>
           </Layout>
-        </Layout>
+          </Content>
+        <Footer style={{textAlign: 'center'}}>Social Network ©2021 Created by BaranovAleksei</Footer>
       </Layout>
-			)
+    )
 	}
 }
 // @ts-ignore
