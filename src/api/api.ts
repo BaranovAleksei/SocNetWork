@@ -1,6 +1,7 @@
 import axios from "axios";
 import {PhotoType, UserType} from "../Types/Types";
 
+
 export const instance = axios.create({
   withCredentials: true,
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',

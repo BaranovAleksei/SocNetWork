@@ -1,30 +1,50 @@
-import React from 'react';
-import s from './Header.module.sass';
-import krasty from '../../img/krasty.png'
-import { NavLink } from 'react-router-dom';
-import { AuthContainerType } from "./HeaderContainer";
+import React from 'react'
+import {useDispatch, useSelector} from "react-redux"
+import {Link} from 'react-router-dom'
+import {selectCurrentUserLogin, selectIsAuth} from "../../redux/auth-selector";
+import {logout} from '../../redux/auth-reducer'
+import {Avatar, Button, Col, Layout, Menu, Row } from 'antd'
 
-type HeaderPropsType = AuthContainerType
+export type MapPropsType = {}
 
-export const Header: React.FC<HeaderPropsType> = (props: HeaderPropsType) => {
+class UserOutlined extends React.Component {
+  render() {
+    return null;
+  }
+}
 
-  const HeaderPage = {
-    HeaderInfo: {
-      title: 'At the bottom of the Sea',
-      logoUrl: krasty
-    }
-  };
-    return (
-        <header>
-            <div className = {s.logo}>
-                <img src = {HeaderPage.HeaderInfo.logoUrl} alt=""/>
-            </div>
-            <h3 className = {s.nameCompany}> {HeaderPage.HeaderInfo.title} </h3>
-            <div className={s.loginBlockOverlay}>
-              { props.isAuth
-                ? <div>{props.login} / <button onClick={props.logout}>Log out</button></div>
-                : <NavLink to={'/login'}>Login</NavLink> }
-            </div>
-        </header>
+export const Header: React.FC<MapPropsType> = (props) => {
+
+  const isAuth = useSelector(selectIsAuth )
+  const login = useSelector(selectCurrentUserLogin)
+  const dispatch = useDispatch()
+  const logoutCallback = () => {
+    dispatch(logout())
+  }
+  const {Header} = Layout
+
+  return (
+        <Header className = 'header'>
+            <Row>
+              <Col span={18}>
+                <Menu theme = 'dark' mode='horizontal' defaultSelectedKeys={['2']}>
+                  <Menu.Item key='1'><Link to='developers'>Developers</Link> </Menu.Item>
+                </Menu>
+              </Col>
+              {isAuth
+                ?<> <Col span={1}>
+                  <Avatar alt = {login || ''} style={{backgroundColor: '#87d068'}} icon = {<UserOutlined/>}/>
+                </Col>
+                  <Col span ={ 5}>
+                    <Button onClick={logoutCallback}>Log out</Button>
+                  </Col>
+                </>
+                : <Col span={6}>
+                  <Button>
+                    <Link to={'/login'}>Login</Link>
+                  </Button>
+                </Col>}
+            </Row>
+        </Header>
     )
 };

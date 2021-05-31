@@ -96,8 +96,7 @@ export const Users: FC<PropsType> = (props) => {
                              followingInProgress={followingInProgress}
                              key={u.id}
                              unfollow={unfollow}
-                             follow={follow}
-          />
+                             follow={follow} />
         )
       }
     </div>
